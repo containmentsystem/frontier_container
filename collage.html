@@ -1301,9 +1301,13 @@ function renderGroupList(){
   keys.forEach(k=>{
     const sel=$('gm'+k);
     sel.innerHTML=optionsHTML(GROUPS[k].media);
+    /* the split this control edits can be gone by the time an event lands
+       (lowering the split count drops the key), so check before writing */
     sel.addEventListener('change',e=>{
+      if(!GROUPS[k])return;
       GROUPS[k].media=e.target.value?+e.target.value:null;refreshAllMedia();});
     $('gs'+k).addEventListener('change',e=>{
+      if(!GROUPS[k])return;
       GROUPS[k].size=Math.max(2,Math.min(10,+e.target.value||2));
       assignSplits();afterSplitChange();});
   });

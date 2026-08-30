@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>portable array</title>
+<title>wall frames</title>
 <style>
   :root{
     --gray:#8a8a8a; --orange:#FF8C1A; --orange-dp:#FF5E00; --rig:#FFA94D;
@@ -120,10 +120,10 @@
 <div id="toast"></div>
 
 <div id="bar" class="panel">
-  <button id="btnSolve" class="on">Solve stands</button>
+  <button id="btnSolve" class="on">Solve layout</button>
   <button id="btnTighten">Tighten</button>
   <button id="btnReroll">Re-roll</button>
-  <button id="btnClash">Clash check</button>
+  <button id="btnClash">Load check</button>
   <button id="btnSnap" class="on">Snap 0.1′</button>
   <button id="btnSave">Save</button>
   <button id="btnLoad">Load</button>
@@ -141,20 +141,19 @@
     <label class="row"><input type="checkbox" data-k="grid" checked><span class="sw" style="border-color:#4a4f57"></span><span class="lbl">Floor grid — 5′</span></label>
     <label class="row"><input type="checkbox" data-k="rig" checked><span class="sw" style="border-color:var(--rig)"></span><span class="lbl">Pipe rig — 21′-0″</span></label>
 
-    <div class="grp">Installation — 7 stands</div>
-    <label class="row"><input type="checkbox" data-k="cstand" checked><span class="sw" style="border-color:var(--orange)"></span><span class="lbl">Panel stands · <span id="ccount">0</span></span></label>
-    <label class="row"><input type="checkbox" data-k="hub" checked><span class="sw" style="border-color:var(--orange-dp)"></span><span class="lbl">Hub stands · 2</span></label>
-    <label class="row"><input type="checkbox" data-k="bags" checked><span class="sw" style="border-color:var(--bag)"></span><span class="lbl">Sandbags — on the tall leg</span></label>
-    <label class="row"><input type="checkbox" data-k="disp" checked><span class="sw" style="border-color:var(--green)"></span><span class="lbl">7″ panels · <span id="scount">0</span></span></label>
+    <div class="grp">Installation — all on the wall</div>
+    <label class="row"><input type="checkbox" data-k="cstand" checked><span class="sw" style="border-color:var(--orange)"></span><span class="lbl">Command strips · <span id="ccount">0</span></span></label>
+    <label class="row"><input type="checkbox" data-k="hub" checked><span class="sw" style="border-color:var(--orange-dp)"></span><span class="lbl">Bank + player plates · 2</span></label>
+    <label class="row"><input type="checkbox" data-k="disp" checked><span class="sw" style="border-color:var(--green)"></span><span class="lbl">7″ frames · <span id="scount">0</span></span></label>
     <label class="row"><input type="checkbox" id="tglMedia" checked><span class="sw" style="border-color:#8de3a1"></span><span class="lbl">Media faces</span></label>
-    <label class="row"><input type="checkbox" data-k="foot" checked><span class="sw" style="border-color:#4a4f57"></span><span class="lbl">Base footprints</span></label>
-    <label class="row"><input type="checkbox" data-k="nest"><span class="sw" style="border-color:var(--nest)"></span><span class="lbl">Nest points — leg over leg</span></label>
+    <label class="row"><input type="checkbox" data-k="foot" checked><span class="sw" style="border-color:#4a4f57"></span><span class="lbl">Frame footprints</span></label>
+    <label class="row"><input type="checkbox" data-k="nest"><span class="sw" style="border-color:var(--clash)"></span><span class="lbl">Overlap flags</span></label>
 
     <div class="grp">Cable — 3 runs per channel</div>
-    <label class="row"><input type="checkbox" data-k="hdmi" checked><span class="sw" style="border-color:var(--hdmi)"></span><span class="lbl">HDMI — player → panel</span></label>
+    <label class="row"><input type="checkbox" data-k="hdmi" checked><span class="sw" style="border-color:var(--hdmi)"></span><span class="lbl">HDMI — player → frame</span></label>
     <label class="row"><input type="checkbox" data-k="dc" checked><span class="sw" style="border-color:var(--dc)"></span><span class="lbl">DC barrel — bank → player</span></label>
-    <label class="row"><input type="checkbox" data-k="usb" checked><span class="sw" style="border-color:var(--usb)"></span><span class="lbl">USB micro — bank → panel</span></label>
-    <label class="row"><input type="checkbox" data-k="pool" checked><span class="sw" style="border-color:var(--cyan-dim)"></span><span class="lbl">Slack pools</span></label>
+    <label class="row"><input type="checkbox" data-k="usb" checked><span class="sw" style="border-color:var(--usb)"></span><span class="lbl">USB micro — bank → frame</span></label>
+    <label class="row"><input type="checkbox" data-k="pool" checked><span class="sw" style="border-color:var(--cyan-dim)"></span><span class="lbl">Cable clips</span></label>
 
     <div class="grp">Overlay</div>
     <label class="row"><input type="checkbox" id="tglTags" checked><span class="sw" style="border-color:#6e747d"></span><span class="lbl">Spec callouts</span></label>
@@ -180,13 +179,13 @@
 </div>
 
 <div id="screen" class="panel">
-  <div class="phead">Panel <span class="chev">▾</span></div>
+  <div class="phead">Frame <span class="chev">▾</span></div>
   <div class="pbody">
-    <div id="selInfo" class="empty">Nothing selected. Click a panel.</div>
+    <div id="selInfo" class="empty">Nothing selected. Click a frame.</div>
     <div id="screenEdit" style="display:none">
       <div class="nlab">Position — X east / Y up / Z south</div>
       <div class="n3"><input type="number" id="nX" step="0.1"><input type="number" id="nY" step="0.1"><input type="number" id="nZ" step="0.1"></div>
-      <div class="nlab">Panel size</div>
+      <div class="nlab">Frame size</div>
       <select id="selSize">
         <option value="">— preset —</option>
         <option value="0.50,0.30">7″ landscape · 800×480</option>
@@ -196,17 +195,17 @@
         <option value="0.26,0.15">3.5″ landscape · 480×320</option>
       </select>
 
-      <div class="grp">Gobo arm — 20″ / 40″</div>
-      <div class="sl"><div class="top"><span>Extension</span><b id="vAL">2.4′</b></div>
-        <input type="range" id="sAL" min="1.40" max="3.33" value="2.4" step="0.02"></div>
-      <div class="sl"><div class="top"><span>Pan — swing about the riser</span><b id="vAP">0°</b></div>
-        <input type="range" id="sAP" min="-180" max="180" value="0" step="1"></div>
-      <div class="sl"><div class="top"><span>Rake — arm angle</span><b id="vAR">0°</b></div>
-        <input type="range" id="sAR" min="-52" max="56" value="0" step="1"></div>
-      <div class="sl"><div class="top"><span>Base twist — off the tall-leg rule</span><b id="vBt">0°</b></div>
-        <input type="range" id="sBt" min="-60" max="60" value="0" step="1"></div>
-      <label class="row"><input type="checkbox" id="cbKnuck"><span class="lbl">Second knuckle (dogleg)</span></label>
-      <p class="note" id="armNote">Riser derives from the rake.</p>
+      <div class="grp">Mounting — this frame</div>
+      <div class="sl"><div class="top"><span>Strips</span><b id="vAL">2</b></div>
+        <input type="range" id="sAL" min="2" max="12" value="2" step="2"></div>
+      <div class="sl"><div class="top"><span>Strip inset — in from the edge</span><b id="vAP">0.30</b></div>
+        <input type="range" id="sAP" min="0.10" max="0.45" value="0.30" step="0.01"></div>
+      <div class="sl"><div class="top"><span>Proud of the wall</span><b id="vAR">0.08′</b></div>
+        <input type="range" id="sAR" min="0.03" max="0.30" value="0.075" step="0.005"></div>
+      <div class="sl"><div class="top"><span>Cable drop side</span><b id="vBt">0</b></div>
+        <input type="range" id="sBt" min="-1" max="1" value="0" step="1"></div>
+      <label class="row"><input type="checkbox" id="cbKnuck"><span class="lbl">Strips set by hand</span></label>
+      <p class="note" id="armNote">Strip count follows the load.</p>
 
       <div class="nlab">Media</div>
       <select id="selScreenMedia"></select>
@@ -218,41 +217,45 @@
     </div>
 
     <div class="grp">Packing</div>
-    <div class="sl"><div class="top"><span>Panel spacing — face plane</span><b id="vSp">1.00×</b></div>
+    <div class="sl"><div class="top"><span>Frame spacing — along the wall</span><b id="vSp">1.00×</b></div>
       <input type="range" id="sSp" min="0.20" max="2.20" value="1.00" step="0.02"></div>
-    <div class="sl"><div class="top"><span>Array centre — Z</span><b id="vBz">-2.5′</b></div>
+    <div class="sl"><div class="top"><span>Frame rise — spacing up the wall</span><b id="vRs">1.00×</b></div>
+      <input type="range" id="sRs" min="0" max="3.00" value="1.00" step="0.02"></div>
+    <div class="sl"><div class="top"><span>Layout centre — Z</span><b id="vBz">-2.5′</b></div>
       <input type="range" id="sBz" min="-14" max="10" value="-2.5" step="0.25"></div>
-    <div class="sl"><div class="top"><span>Standoff from block</span><b id="vSo">6.0′</b></div>
-      <input type="range" id="sSo" min="3" max="12" value="6.0" step="0.25"></div>
-    <div class="sl"><div class="top"><span>Depth spread — rows the grip can use</span><b id="vDep">3.5′</b></div>
-      <input type="range" id="sDep" min="0" max="8" value="3.5" step="0.25"></div>
-    <div class="sl"><div class="top"><span>Nest tolerance — leg over leg</span><b id="vNst">0.14′</b></div>
-      <input type="range" id="sNst" min="0.06" max="0.40" value="0.14" step="0.01"></div>
+    <div class="sl"><div class="top"><span>Mount height — lift every frame</span><b id="vSo">0.0′</b></div>
+      <input type="range" id="sSo" min="-3" max="4" value="0" step="0.1"></div>
+    <div class="sl"><div class="top"><span>Frame gap — clear between frames</span><b id="vDep">0.22′</b></div>
+      <input type="range" id="sDep" min="0.04" max="1.60" value="0.22" step="0.02"></div>
+    <div class="sl"><div class="top"><span>Safety factor — on the strip rating</span><b id="vNst">1.50×</b></div>
+      <input type="range" id="sNst" min="1.0" max="4.0" value="1.5" step="0.05"></div>
 
-    <div class="grp">Grip variety</div>
-    <div class="sl"><div class="top"><span>Arm variety</span><b id="vVar">0.75</b></div>
+    <div class="grp">Variety</div>
+    <div class="sl"><div class="top"><span>Route variety</span><b id="vVar">0.75</b></div>
       <input type="range" id="sVar" min="0" max="1" value="0.75" step="0.01"></div>
 
-    <div class="grp">Hub stands</div>
-    <div class="sl"><div class="top"><span>Bank hub — Z</span><b id="vHbz">-9.5′</b></div>
-      <input type="range" id="sHbz" min="-16" max="12" value="-9.5" step="0.25"></div>
-    <div class="sl"><div class="top"><span>Bank hub — riser</span><b id="vHbr">4.23′</b></div>
-      <input type="range" id="sHbr" min="3.33" max="10.5" value="4.23" step="0.1"></div>
-    <div class="sl"><div class="top"><span>Player hub — Z</span><b id="vHpz">5.5′</b></div>
-      <input type="range" id="sHpz" min="-16" max="12" value="5.5" step="0.25"></div>
-    <div class="sl"><div class="top"><span>Player hub — riser</span><b id="vHpr">3.63′</b></div>
-      <input type="range" id="sHpr" min="3.33" max="10.5" value="3.63" step="0.1"></div>
-    <div class="sl"><div class="top"><span>Hub standoff</span><b id="vHso">9.0′</b></div>
-      <input type="range" id="sHso" min="4" max="16" value="9.0" step="0.25"></div>
+    <div class="grp">Wall plates</div>
+    <div class="sl"><div class="top"><span>Bank plate — Z</span><b id="vHbz">-6.4′</b></div>
+      <input type="range" id="sHbz" min="-17" max="12" value="-6.4" step="0.1"></div>
+    <div class="sl"><div class="top"><span>Bank plate — height</span><b id="vHbr">2.6′</b></div>
+      <input type="range" id="sHbr" min="0.5" max="9.5" value="2.6" step="0.1"></div>
+    <div class="sl"><div class="top"><span>Player plate — Z</span><b id="vHpz">3.6′</b></div>
+      <input type="range" id="sHpz" min="-17" max="12" value="3.6" step="0.1"></div>
+    <div class="sl"><div class="top"><span>Player plate — height</span><b id="vHpr">2.6′</b></div>
+      <input type="range" id="sHpr" min="0.5" max="9.5" value="2.6" step="0.1"></div>
+    <div class="sl"><div class="top"><span>Trunk drop — below the lowest item</span><b id="vHso">0.55′</b></div>
+      <input type="range" id="sHso" min="0.15" max="2.5" value="0.55" step="0.05"></div>
 
     <div class="grp">Cable</div>
-    <div class="sl"><div class="top"><span>Slack</span><b id="vSlk">1.75×</b></div>
+    <div class="sl"><div class="top"><span>Routing</span><b id="vRt">trunk below</b></div>
+      <input type="range" id="sRt" min="0" max="5" value="0" step="1"></div>
+    <div class="sl"><div class="top"><span>Service loop</span><b id="vSlk">1.75×</b></div>
       <input type="range" id="sSlk" min="1.0" max="3.0" value="1.75" step="0.05"></div>
-    <div class="sl"><div class="top"><span>Drape wander</span><b id="vWan">1.00</b></div>
+    <div class="sl"><div class="top"><span>Trunk wander</span><b id="vWan">1.00</b></div>
       <input type="range" id="sWan" min="0" max="2" value="1.0" step="0.05"></div>
 
-    <div class="grp">Orientation — all panels</div>
-    <div class="sl"><div class="top"><span>Array yaw</span><b id="vBy">0°</b></div><input type="range" id="sBy" min="-70" max="70" value="0" step="1"></div>
+    <div class="grp">Orientation — all frames</div>
+    <div class="sl"><div class="top"><span>Frame yaw</span><b id="vBy">0°</b></div><input type="range" id="sBy" min="-70" max="70" value="0" step="1"></div>
     <div class="sl"><div class="top"><span>Tilt</span><b id="vT">0°</b></div><input type="range" id="sT" min="-30" max="30" value="0" step="1"></div>
     <div class="sl"><div class="top"><span>Scatter</span><b id="vS">0°</b></div><input type="range" id="sS" min="0" max="30" value="0" step="1"></div>
     <div class="btnrow"><button id="resetAll">Reset rotation</button></div>
@@ -265,9 +268,9 @@
     <div class="btnrow">
       <button data-v="gallery">Gallery</button><button data-v="plan">Plan</button>
       <button data-v="faceOn">Face on</button><button data-v="approach">Approach</button>
-      <button data-v="grip">Grip detail</button><button data-v="behind">Behind</button>
-      <button data-v="bases">Bases</button><button data-v="banks">Bank hub</button>
-      <button data-v="floor">Floor runs</button><button id="orthoBtn">Ortho</button>
+      <button data-v="grip">Strip detail</button><button data-v="behind">Raking</button>
+      <button data-v="bases">Trunk</button><button data-v="banks">Bank plate</button>
+      <button data-v="floor">Player plate</button><button id="orthoBtn">Ortho</button>
     </div>
     <p class="note" id="rlenNote">—</p>
   </div>
@@ -511,6 +514,27 @@ windowRun('z',WEST,NORTH+1,SOUTH-1);
 /* ============================================================
    PANELS — placed tight in the face plane
    ============================================================ */
+/* ============================================================
+   INSTALLATION — FRAMES COMMAND-STRIPPED FLAT TO THE WALL
+
+   Nothing touches the floor. Every panel is a frame stuck to the
+   west face of the storage block on Command strips, and so are the
+   power banks and the media players. The install is a plane now,
+   so the problems change:
+
+     · a stand can be nudged in three axes; a strip cannot. Once it
+       is pressed on it is committed, so the layout is solved as a
+       2-D packing on the wall BEFORE anything is stuck.
+     · a C-stand is held by mass. A strip is held by adhesive shear,
+       so the governing number is weight per strip, and the count
+       comes off the load and the span — not off taste.
+     · cable cannot pool on the floor. It runs the wall in
+       right-angle trunks with a service loop at each drop.
+   ============================================================ */
+const WALL_X=BOX.x0;                     /* west face of the block */
+const WALL_Z0=BOX.z0, WALL_Z1=BOX.z1, WALL_H=BOX.h;
+const WALL_M=0.5;                        /* keep frames off the arrises */
+
 const DEFAULT_RIGS=[
   {u:-1.55,y:5.05,w:0.50,h:0.30},
   {u:-0.78,y:4.35,w:0.30,h:0.50},
@@ -519,266 +543,266 @@ const DEFAULT_RIGS=[
   {u: 1.52,y:5.20,w:0.50,h:0.30},
 ];
 let RIGS=[];
-let BANK_Z=-2.5, SPREAD=1.00, STANDOFF=6.0, VARIETY=0.75;
-let DEPTH=3.5, NEST_TOL=0.14, SLACK=1.75, WANDER=1.0;
-const HUB={bank:{z:-9.5,riser:4.23}, player:{z:5.5,riser:3.63}, standoff:9.0};
+let BANK_Z=-2.5, SPREAD=1.00, RISE=1.00, MOUNT_Y=0.0, VARIETY=0.75;
+const BASE_Y=4.95;                       /* centre height of the layout */
+let GAP=0.22, SAFETY=1.5, SLACK=1.75, WANDER=1.0, TRUNK_DROP=0.55;
+
+const PLATE={bank:{z:-6.4,y:2.60}, player:{z:3.6,y:2.60}};
 const BANK_W=0.52, BANK_H=0.09, BANK_D=0.26;
 const PLAY_W=0.42, PLAY_H=0.11, PLAY_D=0.42;
 
-/* ============================================================
-   C-STAND GEOMETRY MODEL — the part that decides collisions
-   ============================================================ */
-/* legs, in plan, with the height each one sits at along its run */
-function legSet(cx,cz,baseAng){
-  const out=[];
-  for(let i=0;i<3;i++){
-    const a=baseAng+i*2*Math.PI/3;
-    out.push({
-      i, ang:a,
-      x0:cx, z0:cz, y0:LEG_ATTACH[i],
-      x1:cx+LEG_REACH[i]*Math.cos(a), z1:cz+LEG_REACH[i]*Math.sin(a), y1:FOOT_Y,
-      reach:LEG_REACH[i]
-    });}
-  return out;}
-/* height of a leg at parameter t along its run */
-function legY(L,t){return L.y0+(L.y1-L.y0)*t;}
-/* 2-D segment intersection, returns params or null */
-function segX(ax,az,bx,bz, cx,cz,dx,dz){
-  const r1=bx-ax,r2=bz-az,s1=dx-cx,s2=dz-cz;
-  const den=r1*s2-r2*s1;
-  if(Math.abs(den)<1e-9)return null;
-  const t=((cx-ax)*s2-(cz-az)*s1)/den;
-  const u=((cx-ax)*r2-(cz-az)*r1)/den;
-  if(t<0||t>1||u<0||u>1)return null;
-  return {t,u,x:ax+r1*t,z:az+r2*t};}
-/* distance from a point to a 2-D segment */
-function ptSeg(px,pz,ax,az,bx,bz){
-  const vx=bx-ax,vz=bz-az,L2=vx*vx+vz*vz;
-  let t=L2>1e-9?((px-ax)*vx+(pz-az)*vz)/L2:0;
-  t=Math.max(0,Math.min(1,t));
-  const qx=ax+vx*t,qz=az+vz*t;
-  return {d:Math.hypot(px-qx,pz-qz),t};}
+/* Command large strip — 3¾″ × ¾″, 4 lb apiece */
+const STRIP_L=0.3125, STRIP_W=0.0625, STRIP_CAP=4.0;
+const CLIP_X=0.060;                      /* cable plane, just off the wall */
+const SKIRT_Y=0.55;                      /* low run, hugging the base of the wall */
+const TRUNK_MIN=0.45;                    /* a trunk can't run below the wall */
+/* Shift the three channel trunks as a set so they stay on the wall without
+   losing the spacing that keeps them readable. Clamping each one separately
+   would pile them on top of each other at the limits. */
+function fitTrunks(ys){
+  const hiLim=WALL_H-0.35, lo=Math.min.apply(null,ys), hi=Math.max.apply(null,ys);
+  let shift=0;
+  if(lo<TRUNK_MIN) shift=TRUNK_MIN-lo;
+  else if(hi>hiLim) shift=hiLim-hi;
+  return ys.map(y=>Math.max(TRUNK_MIN,Math.min(hiLim,y+shift)));
+}
+/* how a run gets from a socket to a drop. every one of these is something a
+   grip would actually do on a wall; which you want depends on what the room
+   is allowed to see. */
+const ROUTES=['trunk below','trunk above','dogleg','skirting','riser','direct'];
+let ROUTE=0;
+const PROUD_DEF=0.075;
 
-/* Do two stands physically clash?  Returns {ok, nests:[...], reason} */
-function standsClear(A,B,tol){
-  const nests=[];
-  /* column-to-column: two risers can never occupy the same spot */
-  const cc=Math.hypot(A.cx-B.cx,A.cz-B.cz);
-  if(cc<0.42) return {ok:false,nests,reason:'columns'};
-  /* a column runs from the floor to its head — it blocks every height.
-     So no other stand's leg may pass through it. */
-  for(const L of B.legs){
-    const r=ptSeg(A.cx,A.cz,L.x0,L.z0,L.x1,L.z1);
-    if(r.d<LEG_RAD+RISER_RAD[0]+0.03) return {ok:false,nests,reason:'column through leg'};}
-  for(const L of A.legs){
-    const r=ptSeg(B.cx,B.cz,L.x0,L.z0,L.x1,L.z1);
-    if(r.d<LEG_RAD+RISER_RAD[0]+0.03) return {ok:false,nests,reason:'column through leg'};}
-  /* leg over leg — the nesting case. Crossing is fine if they clear vertically. */
-  for(const LA of A.legs) for(const LB of B.legs){
-    const X=segX(LA.x0,LA.z0,LA.x1,LA.z1, LB.x0,LB.z0,LB.x1,LB.z1);
-    if(!X)continue;
-    const yA=legY(LA,X.t), yB=legY(LB,X.u);
-    const gap=Math.abs(yA-yB);
-    if(gap<tol) return {ok:false,nests,reason:'legs foul'};
-    nests.push({x:X.x,z:X.z,y:Math.min(yA,yB),gap});}
-  return {ok:true,nests,reason:'clear'};}
+/* ---------- load: what sets the strip count ---------- */
+function frameLb(r){ return 0.22 + r.w*r.h*2.4 + 2*(r.w+r.h)*0.55; }
+function stripsForLoad(lb){
+  const n=Math.ceil(lb*SAFETY/STRIP_CAP);
+  return Math.max(2, n%2 ? n+1 : n);
+}
+function stripsForFrame(r){
+  /* a wide frame needs strips spread along its width whatever it weighs */
+  const bySpan=Math.max(1,Math.ceil(r.w/0.5))*2;
+  return Math.max(stripsForLoad(frameLb(r)), bySpan);
+}
+function plateLb(key){ return key==='bank' ? 0.30+5*0.62 : 0.30+5*0.48; }
 
-/* stand solved back from the arm — screen is fixed */
-function standSolve(r){
-  const len=r.armLen;
-  const pan=r.armPan*D2R, rake=r.armRake*D2R;
-  const dirH=V(-Math.cos(pan),0,Math.sin(pan));
-  const lo=Math.max(RISER_MIN*0.42, r.y-len*0.94), hi=Math.min(RISER_MAX, r.y+len*0.94);
-  let riser=Math.min(hi,Math.max(lo, r.y-len*Math.sin(rake)));
-  const sinR=Math.max(-0.94,Math.min(0.94,(r.y-riser)/len));
-  const horiz=len*Math.sqrt(1-sinR*sinR);
-  const cx=r.x-dirH.x*horiz, cz=r.z-dirH.z*horiz;
-  /* TALL LEG UNDER THE ARM — base angle follows the arm, plus any twist */
-  const baseAng=Math.atan2(dirH.z,dirH.x)+(r.baseTwist||0)*D2R;
-  return {cx,cz,riser,dirH,horiz,baseAng,legs:legSet(cx,cz,baseAng)};}
+/* ---------- the wall plane: frames live in (z,y), rolled about the face ---------- */
+function frameY(r){ return BASE_Y+MOUNT_Y+r.v*RISE+(r.yAdj||0); }
+function frameZ(r){ return BANK_Z+r.u*SPREAD+(r.zAdj||0); }
+/* solver corrections are transient — any change to the layout parameters
+   re-derives them, which is what lets the gap slider work in both directions */
+function clearAdj(){ RIGS.forEach(r=>{ r.zAdj=0; if(!r.yPinned) r.yAdj=0; }); }
+function halfExt(r){
+  const a=(r.pRoll||0)*D2R, c=Math.abs(Math.cos(a)), s=Math.abs(Math.sin(a));
+  return {hz:(r.w*c+r.h*s)/2, hy:(r.w*s+r.h*c)/2};
+}
+function L2W(r,du,dv,x){
+  const a=(r.pRoll||0)*D2R, c=Math.cos(a), s=Math.sin(a);
+  return V(x, r.y+du*s+dv*c, r.z+du*c-dv*s);
+}
+function framesFoul(A,B,gap){
+  const a=halfExt(A), b=halfExt(B);
+  return Math.abs(A.z-B.z)<a.hz+b.hz+gap && Math.abs(A.y-B.y)<a.hy+b.hy+gap;
+}
+function plateRect(key){
+  const cfg=PLATE[key], isB=key==='bank';
+  const w=isB?BANK_W:PLAY_W, h=isB?BANK_H:PLAY_H, stack=5*(h+0.045);
+  return {z:cfg.z, y:cfg.y+stack/2, hz:w/2+0.06, hy:stack/2+0.06};
+}
 
-/* ============================================================
-   THE PACKING SOLVER
-   ============================================================ */
-const PANS=[];for(let a=-180;a<180;a+=7.5)PANS.push(a);
-const RAKES=[-48,-34,-20,-8,0,10,22,34,46];
-const LENS=[1.45,1.70,2.05,2.45,2.85,3.25];
-const TWISTS=[0,-22,22,-44,44];
-function depthRows(){const n=4;const out=[];
-  for(let i=0;i<n;i++)out.push(DEPTH*(i/(n-1||1)));return out;}
-
-function solveStands(preserveManual=true){
-  const order=[...RIGS].sort((a,b)=>Math.abs(a.u)-Math.abs(b.u));
-  const placed=[];
-  const rows=depthRows();
-  order.forEach(r=>{
-    if(preserveManual&&r.armManual){
-      const S=standSolve(r);Object.assign(r,S);placed.push(r);return;}
-    let best=null,bestScore=-Infinity;
-    const wantPan=r.aR.pan*92*VARIETY, wantRake=r.aR.rake*44*VARIETY;
-    const wantLen=1.55+r.aR.len*1.7;
-    for(const row of rows){
-      const x=GAL_E-STANDOFF-row;
-      for(const pan of PANS) for(const rake of RAKES) for(const len of LENS){
-        for(const tw of TWISTS){
-          const probe={x,y:r.y,z:r.z,armLen:len,armPan:pan,armRake:rake,baseTwist:tw};
-          const S=standSolve(probe);
-          if(S.riser<RISER_MIN*0.5||S.riser>RISER_MAX)continue;
-          /* stay off the block wall and out of the walkway */
-          if(S.cx>GAL_E-1.9)continue;
-          if(S.cx<GAL_E-15)continue;
-          const cand={cx:S.cx,cz:S.cz,legs:S.legs};
-          let ok=true,margin=Infinity,nestCount=0;
-          for(const p of placed){
-            const res=standsClear(cand,p,NEST_TOL);
-            if(!res.ok){ok=false;break;}
-            nestCount+=res.nests.length;
-            margin=Math.min(margin,Math.hypot(cand.cx-p.cx,cand.cz-p.cz));}
-          if(!ok)continue;
-          if(!placed.length)margin=6;
-          /* score: honour the rolled intent, reward tight-but-legal packing,
-             reward genuine nests, punish base twist and extreme rake */
-          let score=0;
-          score-=Math.abs(((pan-wantPan+540)%360)-180)*0.012;
-          score-=Math.abs(rake-wantRake)*0.020;
-          score-=Math.abs(len-wantLen)*0.55;
-          score-=Math.abs(tw)*0.016;
-          score-=row*0.10;
-          score+=Math.min(margin,4.0)*0.30;
-          score+=nestCount*0.42;
-          if(score>bestScore){bestScore=score;best={x,pan,rake,len,tw};}
-        }}}
-    if(best){
-      r.x=best.x;r.xOff=(GAL_E-STANDOFF)-best.x;
-      r.armPan=best.pan;r.armRake=best.rake;r.armLen=best.len;r.baseTwist=best.tw;
-      r.knuck=VARIETY>0.35 && r.aR.k<0.28+0.15*VARIETY;
-      r.bag=true;
-    }
-    const S=standSolve(r);Object.assign(r,S);placed.push(r);
+/* ---------- packing ---------- */
+function clampToWall(r){
+  const e=halfExt(r);
+  r.z=Math.min(WALL_Z1-WALL_M-e.hz, Math.max(WALL_Z0+WALL_M+e.hz, r.z));
+  r.y=Math.min(WALL_H-WALL_M-e.hy, Math.max(WALL_M+e.hy, r.y));
+}
+function sepPair(A,B,ia,ib){
+  const a=halfExt(A), b=halfExt(B);
+  let dz=B.z-A.z, dy=B.y-A.y;
+  const oz=(a.hz+b.hz+GAP)-Math.abs(dz), oy=(a.hy+b.hy+GAP)-Math.abs(dy);
+  if(oz<=0||oy<=0) return false;
+  /* coincident frames give no push direction — break the tie by index */
+  if(Math.abs(dz)<1e-9&&Math.abs(dy)<1e-9){ dz=(ib-ia); dy=((ia+ib)%2?1:-1)*1e-6; }
+  if(oz<=oy){ const t=(dz<0?-1:1)*oz/2+1e-4; A.z-=t; B.z+=t; }
+  else      { const t=(dy<0?-1:1)*oy/2+1e-4; A.y-=t; B.y+=t; }
+  return true;
+}
+function sepPlates(){
+  let hit=false;
+  RIGS.forEach(r=>{
+    const e=halfExt(r);
+    ['bank','player'].forEach(k=>{
+      const p=plateRect(k), dz=r.z-p.z, dy=r.y-p.y;
+      const oz=(e.hz+p.hz+GAP)-Math.abs(dz), oy=(e.hy+p.hy+GAP)-Math.abs(dy);
+      if(oz>0&&oy>0){ hit=true;
+        if(oz<=oy) r.z+=(dz<0?-1:1)*oz+1e-4; else r.y+=(dy<0?-1:1)*oy+1e-4; }
+    });
   });
-  RIGS.forEach(r=>{r.screen.position.set(r.x,r.y,r.z);buildStand(r);});
-  scene.updateMatrixWorld(true);}
+  return hit;
+}
+function countFouls(){
+  let n=0;
+  for(let i=0;i<RIGS.length;i++)for(let j=i+1;j<RIGS.length;j++)
+    if(framesFoul(RIGS[i],RIGS[j],GAP))n++;
+  return n;
+}
+function solveFrames(){
+  let prev=Infinity, stall=0;
+  for(let it=0; it<400; it++){
+    let moved=false;
+    for(let i=0;i<RIGS.length;i++)for(let j=i+1;j<RIGS.length;j++)
+      if(sepPair(RIGS[i],RIGS[j],i,j)) moved=true;
+    if(sepPlates()) moved=true;
+    RIGS.forEach(clampToWall);
+    const n=countFouls();
+    if(n===0&&!moved) break;
+    /* clamping can undo a push; detect the stall and break the symmetry */
+    if(n>=prev) stall++; else stall=0;
+    prev=n;
+    if(stall>10){
+      RIGS.forEach((r,i)=>{
+        if(RIGS.some((o,j)=>j!==i&&framesFoul(r,o,GAP)))
+          r.y+=((i%2)?1:-1)*(halfExt(r).hy*0.9+GAP);
+      });
+      RIGS.forEach(clampToWall);
+      stall=0; prev=Infinity;
+    }
+  }
+  RIGS.forEach(r=>{
+    r.zAdj = r.z-(BANK_Z+r.u*SPREAD);
+    r.yAdj = r.y-(BASE_Y+MOUNT_Y+r.v*RISE);
+    if(!r.stripManual) r.strips=stripsForFrame(r);
+    /* the solver moved these, so the panels have to follow */
+    if(r.screen) r.screen.position.set(r.x,r.y,r.z);
+  });
+}
 
 function clashReport(){
   clearGroup(G.nest);
-  const all=RIGS.map(r=>({cx:r.cx,cz:r.cz,legs:r.legs,ref:r}))
-    .concat([HUBS.bank,HUBS.player].filter(h=>h.legs).map(h=>({cx:h.cx,cz:h.cz,legs:h.legs,ref:h})));
-  let bad=0,nests=0,minC=Infinity;
-  RIGS.forEach(r=>r.clash=false);
-  for(let i=0;i<all.length;i++)for(let j=i+1;j<all.length;j++){
-    const res=standsClear(all[i],all[j],NEST_TOL);
-    minC=Math.min(minC,Math.hypot(all[i].cx-all[j].cx,all[i].cz-all[j].cz));
-    if(!res.ok){bad++;if(all[i].ref.outMat)all[i].ref.clash=true;if(all[j].ref.outMat)all[j].ref.clash=true;}
-    else{nests+=res.nests.length;
-      const m=mat(C.nest,.9);
-      res.nests.forEach(n=>{
-        circleXZ(n.x,n.z,0.16,n.y+0.02,m,G.nest,12);
-        segs([V(n.x,Math.max(0.01,n.y-0.10),n.z),V(n.x,n.y+0.14,n.z)],m,G.nest);});}}
-  const el=$('clash');
-  el.className='';
-  el.innerHTML = bad
-    ? '<span class="bad">'+bad+' clash'+(bad>1?'es':'')+'</span> — stands fouling. Hit Solve.'
-    : '<span class="ok">Clear.</span> '+nests+' leg-over-leg nests · closest columns '+
-      minC.toFixed(2)+'′ apart.';
-  RIGS.forEach(r=>buildStand(r));
+  let bad=0, minGap=Infinity, strips=0, lb=0, light=0;
+  RIGS.forEach(r=>{ r.clash=false; });
+  for(let i=0;i<RIGS.length;i++)for(let j=i+1;j<RIGS.length;j++){
+    const A=RIGS[i],B=RIGS[j],a=halfExt(A),b=halfExt(B);
+    const gz=Math.abs(A.z-B.z)-(a.hz+b.hz), gy=Math.abs(A.y-B.y)-(a.hy+b.hy);
+    minGap=Math.min(minGap,Math.max(gz,gy));
+    if(framesFoul(A,B,GAP)){
+      bad++; A.clash=true; B.clash=true;
+      const m=mat(C.clash,.9), mz=(A.z+B.z)/2, my=(A.y+B.y)/2;
+      circleXZ(WALL_X-0.03,mz,0.18,my,m,G.nest,12);
+      segs([V(WALL_X-0.03,my-0.22,mz),V(WALL_X-0.03,my+0.22,mz)],m,G.nest);
+    }
+  }
+  RIGS.forEach(r=>{
+    const e=halfExt(r);
+    ['bank','player'].forEach(k=>{
+      const p=plateRect(k);
+      if(Math.abs(r.z-p.z)<e.hz+p.hz+GAP&&Math.abs(r.y-p.y)<e.hy+p.hy+GAP){
+        bad++; r.clash=true; }
+    });
+    r.lb=frameLb(r);
+    if(!r.strips) r.strips=stripsForFrame(r);
+    if(r.strips*STRIP_CAP < r.lb*SAFETY){ light++; r.clash=true; }
+    lb+=r.lb; strips+=r.strips;
+  });
+  ['bank','player'].forEach(k=>{ lb+=plateLb(k); strips+=stripsForLoad(plateLb(k)); });
+
+  const el=$('clash'); el.className='';
+  el.innerHTML = (bad||light)
+    ? '<span class="bad">'+(bad+light)+' problem'+((bad+light)>1?'s':'')+'</span> — '+
+      (light?light+' under-stripped. ':'')+(bad?'frames overlap. ':'')+'Hit Solve.'
+    : '<span class="ok">Clear.</span> '+strips+' strips carrying '+lb.toFixed(1)+' lb · '+
+      (strips*STRIP_CAP).toFixed(0)+' lb rated · closest frames '+
+      (isFinite(minGap)?minGap.toFixed(2):'—')+'′ apart.';
+  RIGS.forEach(buildFrame);
   scene.updateMatrixWorld(true);
-  return {bad,nests,minC};}
+  return {bad:bad+light, minGap, strips, lb};
+}
 
 /* ============================================================
-   DRAW A C-STAND
+   DRAW — a frame's strips and its footprint on the wall
    ============================================================ */
-function drawBase(cx,cz,legs,riser,m,g,bag,bagGrp,footGrp){
-  /* rotating collar */
-  circleXZ(cx,cz,0.115,COLLAR_Y,m,g,14);
-  circleXZ(cx,cz,0.115,COLLAR_Y+0.10,m,g,14);
-  legs.forEach((L,i)=>{
-    const a=V(L.x0,L.y0,L.z0), b=V(L.x1,L.y1,L.z1);
-    tubeSeg(a,b,LEG_RAD,m,g,6,3);
-    /* the knuckle where the leg meets the collar, at its own height */
-    boxAt(V(cx,L.y0,cz),0.20,0.17,0.20,m,g,L.ang);
-    /* foot */
-    circleXZ(L.x1,L.z1,0.085,0.02,m,g,8);
-    segs([b,V(L.x1,0.02,L.z1)],m,g);
-    /* tall leg gets the bag */
-    if(i===0&&bag&&bagGrp){
-      const mid=V(cx,0.14,cz).lerp(V(L.x1,0.14,L.z1),0.62);
-      sandbag(mid,V(Math.cos(L.ang),0,Math.sin(L.ang)),mat(C.bag,.85),bagGrp);}
-  });
-  if(footGrp){
-    const fm=mat(C.grid,.55);
-    line(legs.map(L=>V(L.x1,0.012,L.z1)).concat([V(legs[0].x1,0.012,legs[0].z1)]),fm,footGrp);}
-  /* riser, three sections */
-  const y0=COLLAR_Y, span=riser-y0;
-  for(let s=0;s<3;s++){
-    const a=V(cx,y0+span*(s/3),cz), b=V(cx,y0+span*((s+1)/3),cz);
-    tubeSeg(a,b,RISER_RAD[s],m,g,8,4);
-    if(s<2){boxAt(V(cx,b.y,cz),0.19,0.14,0.19,m,g);
-            segs([V(cx+0.10,b.y,cz),V(cx+0.27,b.y+0.02,cz)],m,g);}}
+function stripPoints(r){
+  const n=Math.max(2,r.strips||stripsForFrame(r)), per=Math.max(1,Math.round(n/2));
+  const inset=r.stripInset||0.30, out=[];
+  for(let c=0;c<2;c++){
+    const du=(c?1:-1)*r.w*inset;
+    for(let k=0;k<per;k++){
+      const t=per===1?0:(k/(per-1)-0.5)*2;
+      out.push({du:du, dv:t*r.h*0.32});
+    }
+  }
+  return out;
 }
-function buildStand(r){
-  clearGroup(r.standGrp); clearGroup(r.bagGrp); clearGroup(r.footGrp);
-  if(r.standGrp.parent)r.standGrp.parent.remove(r.standGrp);
-  G.cstand.add(r.standGrp);
-  const S=standSolve(r);
-  Object.assign(r,S);
-  const g=r.standGrp, screenP=V(r.x,r.y,r.z), top=V(S.cx,S.riser,S.cz);
-  r.top=top;
+function buildFrame(r){
+  clearGroup(r.stripGrp); clearGroup(r.footGrp);
+  if(r.stripGrp.parent) r.stripGrp.parent.remove(r.stripGrp);
+  G.cstand.add(r.stripGrp);
   const m=mat(r.clash?C.clash:C.orange,.95);
-  drawBase(S.cx,S.cz,S.legs,S.riser,m,g,r.bag,r.bagGrp,r.footGrp);
+  const xs=WALL_X-0.012;
+  const a=(r.pRoll||0)*D2R, ca=Math.cos(a), sa=Math.sin(a);
+  const hz=STRIP_W/2, hy=STRIP_L/2;
 
-  const straight=screenP.clone().sub(top);
-  const side=new THREE.Vector3().crossVectors(straight,UP);
-  const sideOK=side.lengthSq()>1e-6?side.normalize():V(0,0,1);
-  if(r.knuck){
-    const kAng=(r.knuckAng||22)*D2R;
-    const dir1=straight.clone().normalize().applyAxisAngle(sideOK,kAng);
-    const elbow=top.clone().addScaledVector(dir1,straight.length()*0.60);
-    tubeSeg(top,elbow,0.034,m,g,6,4);
-    tubeSeg(elbow,screenP,0.030,m,g,6,4);
-    gripHead(elbow,dir1,m,g,0.82);
-    segs([top,top.clone().addScaledVector(dir1,-0.48)],m,g);
-    gripHead(top,dir1,m,g,1.0);
-  } else {
-    const d=straight.clone().normalize();
-    tubeSeg(top.clone().addScaledVector(d,-0.09),screenP,0.034,m,g,6,4);
-    segs([top,top.clone().addScaledVector(d,-0.58)],m,g);
-    gripHead(top,d,m,g,1.0);}
-  gripHead(screenP,straight.clone().normalize(),m,g,0.86);
+  stripPoints(r).forEach(s=>{
+    const c=L2W(r,s.du,s.dv,xs);
+    const pz=[-hz,hz,hz,-hz,-hz], py=[-hy,-hy,hy,hy,-hy];
+    line(pz.map((v,i)=>V(xs, c.y+v*sa+py[i]*ca, c.z+v*ca-py[i]*sa)),m,r.stripGrp);
+    /* the pull tab, which has to stay reachable */
+    segs([V(xs,c.y-hy*ca,c.z+hy*sa),V(xs,c.y-(hy+0.07)*ca,c.z+(hy+0.07)*sa)],
+         mat(C.tie,.6),r.stripGrp);
+    /* the strip stack holding the frame proud of the wall */
+    segs([c, L2W(r,s.du,s.dv,WALL_X-(r.proud||PROUD_DEF))],m,r.stripGrp);
+  });
+
+  line([[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]
+        .map(p=>L2W(r,p[0]*r.w/2,p[1]*r.h/2,WALL_X-0.006)),
+       mat(C.grid,.55),r.footGrp);
 }
 
-/* ---- hub stands ---- */
-const HUBS={bank:{grp:new THREE.Group(),bagGrp:new THREE.Group(),footGrp:new THREE.Group(),pts:[]},
-            player:{grp:new THREE.Group(),bagGrp:new THREE.Group(),footGrp:new THREE.Group(),pts:[]}};
-G.hub.add(HUBS.bank.grp,HUBS.player.grp);
-G.bags.add(HUBS.bank.bagGrp,HUBS.player.bagGrp);
-G.foot.add(HUBS.bank.footGrp,HUBS.player.footGrp);
-function buildHub(key){
-  const H=HUBS[key],cfg=HUB[key];
-  clearGroup(H.grp);clearGroup(H.bagGrp);clearGroup(H.footGrp);H.pts=[];
-  const cx=GAL_E-HUB.standoff, cz=cfg.z, riser=cfg.riser;
-  const baseAng=key==='bank'?Math.PI*0.5:Math.PI*1.5;
-  const legs=legSet(cx,cz,baseAng);
-  const m=mat(C.orangeDp,.95);
-  drawBase(cx,cz,legs,riser,m,H.grp,true,H.bagGrp,H.footGrp);
-  boxAt(V(cx,riser,cz),0.22,0.17,0.22,m,H.grp);
-  const isBank=key==='bank';
-  const bw=isBank?BANK_W:PLAY_W, bh=isBank?BANK_H:PLAY_H, bd=isBank?BANK_D:PLAY_D;
-  const stackH=5*(bh+0.045);
-  tubeSeg(V(cx,riser,cz),V(cx,riser+stackH+0.16,cz),0.030,m,H.grp,6,4);
-  const gm=mat(C.gray,.9);
-  let y=riser+0.09;
-  for(let i=0;i<5;i++){
-    boxAt(V(cx,y+bh/2,cz),bw,bh,bd,gm,H.grp,(i%2?0.05:-0.045));
-    line([V(cx-bw*0.34,y,cz-bd/2-0.02),V(cx-bw*0.34,y+bh,cz-bd/2-0.02),
-          V(cx-bw*0.34,y+bh,cz+bd/2+0.02),V(cx-bw*0.34,y,cz+bd/2+0.02),
-          V(cx-bw*0.34,y,cz-bd/2-0.02)],mat(C.tie,.55),H.grp);
-    H.pts.push(V(cx-bw/2-0.04, y+bh*0.5, cz));
-    y+=bh+0.045;}
-  H.cx=cx;H.cz=cz;H.riser=riser;H.legs=legs;}
+/* ---------- wall plates: banks and players, stripped on like the frames ---------- */
+const PLATES={bank:{grp:new THREE.Group(),footGrp:new THREE.Group(),pts:[]},
+              player:{grp:new THREE.Group(),footGrp:new THREE.Group(),pts:[]}};
+G.hub.add(PLATES.bank.grp,PLATES.player.grp);
+G.foot.add(PLATES.bank.footGrp,PLATES.player.footGrp);
 
-/* ---- variety roll ---- */
+function buildPlate(key){
+  const P=PLATES[key], cfg=PLATE[key];
+  clearGroup(P.grp); clearGroup(P.footGrp); P.pts=[];
+  const isB=key==='bank';
+  const bw=isB?BANK_W:PLAY_W, bh=isB?BANK_H:PLAY_H, bd=isB?BANK_D:PLAY_D;
+  const m=mat(C.orangeDp,.95), gm=mat(C.gray,.9);
+  const cz=cfg.z, y0=cfg.y, stack=5*(bh+0.045);
+  const pz=bw/2+0.06, py0=y0-0.06, py1=y0+stack+0.06;
+
+  const plate=x=>[V(x,py0,cz-pz),V(x,py0,cz+pz),V(x,py1,cz+pz),V(x,py1,cz-pz),V(x,py0,cz-pz)];
+  line(plate(WALL_X-0.008),m,P.grp);
+  line(plate(WALL_X-0.006),mat(C.grid,.5),P.footGrp);
+
+  const n=stripsForLoad(plateLb(key)), rows=Math.max(1,Math.ceil(n/2));
+  for(let k=0;k<n;k++){
+    const c=k%2, row=Math.floor(k/2);
+    const sz=cz+(c?1:-1)*bw*0.30;
+    const sy=y0+0.10+(rows<2?stack/2:(row/(rows-1))*(stack-0.20));
+    line([V(WALL_X-0.012,sy-STRIP_L/2,sz-STRIP_W/2),V(WALL_X-0.012,sy-STRIP_L/2,sz+STRIP_W/2),
+          V(WALL_X-0.012,sy+STRIP_L/2,sz+STRIP_W/2),V(WALL_X-0.012,sy+STRIP_L/2,sz-STRIP_W/2),
+          V(WALL_X-0.012,sy-STRIP_L/2,sz-STRIP_W/2)],m,P.grp);
+  }
+
+  let y=y0+0.09;
+  for(let i=0;i<5;i++){
+    boxAt(V(WALL_X-PROUD_DEF-bd/2,y+bh/2,cz),bd,bh,bw,gm,P.grp);
+    line([V(WALL_X-PROUD_DEF-bd-0.02,y,cz-bw*0.34),V(WALL_X-PROUD_DEF-bd-0.02,y+bh,cz-bw*0.34),
+          V(WALL_X-PROUD_DEF-0.02,y+bh,cz-bw*0.34),V(WALL_X-PROUD_DEF-0.02,y,cz-bw*0.34),
+          V(WALL_X-PROUD_DEF-bd-0.02,y,cz-bw*0.34)],mat(C.tie,.55),P.grp);
+    P.pts.push(V(WALL_X-CLIP_X,y+bh*0.5,cz+bw/2+0.03));
+    y+=bh+0.045;
+  }
+  P.cz=cz; P.y0=y0; P.stack=stack;
+}
+
+/* ---------- re-roll: the small variations any real install has ---------- */
 function rollArms(r){
-  r.aR={pan:rr(-1,1),rake:rr(-1,1),len:rr(0,1),k:rnd(),kAng:rr(14,32)};}
+  r.aR={pan:rr(-1,1),rake:rr(-1,1),len:rr(0,1),k:rnd(),kAng:rr(14,32)};
+}
 
 const PLACEHOLDER=()=>new THREE.MeshBasicMaterial({color:0x0d1f14,transparent:true,opacity:0.65,side:THREE.DoubleSide});
 function buildScreenContent(r){
@@ -794,36 +818,47 @@ function buildScreenContent(r){
   r.faceMat=r.faceMat||PLACEHOLDER();
   const mesh=new THREE.Mesh(new THREE.PlaneGeometry(r.w,r.h),r.faceMat);
   mesh.position.z=0.006;mesh.userData.rig=r;g.add(mesh);r.mesh=mesh;
-  const eH=new THREE.Object3D();eH.position.set(-hw*0.45,-hh*0.55,-d-0.03);g.add(eH);r.entHdmi=eH;
-  const eU=new THREE.Object3D();eU.position.set( hw*0.45,-hh*0.55,-d-0.03);g.add(eU);r.entUsb=eU;}
+  /* drops leave the bottom edge and land exactly on the cable plane — a frame
+     is only PROUD off the wall, so anything further back would be inside it */
+  const back=Math.max(0,(r.proud||PROUD_DEF)-CLIP_X);
+  const ds=(r.dropSide||0)*0.30;
+  const eH=new THREE.Object3D();eH.position.set(hw*(-0.45+ds),-hh,-back);g.add(eH);r.entHdmi=eH;
+  const eU=new THREE.Object3D();eU.position.set(hw*( 0.45+ds),-hh,-back);g.add(eU);r.entUsb=eU;}
 function makeRig(spec){
-  const r=Object.assign({pYaw:0,pTilt:0,pRoll:0,media:null,xOff:0,armManual:false,
-    baseTwist:0,knuck:false,knuckAng:22,bag:true,clash:false},spec);
+  const r=Object.assign({pYaw:0,pTilt:0,pRoll:0,media:null,xOff:0,stripManual:false,
+    stripInset:0.30,proud:PROUD_DEF,dropSide:0,clash:false},spec);
   if(r.u===undefined)r.u=0;
-  r.z=BANK_Z+r.u*SPREAD; r.x=GAL_E-STANDOFF-r.xOff;
+  if(r.v===undefined)r.v=(spec.y===undefined?0:spec.y-BASE_Y);
+  if(r.yAdj===undefined)r.yAdj=0;
+  if(r.zAdj===undefined)r.zAdj=0;
+  r.z=frameZ(r); r.y=frameY(r); r.x=WALL_X-r.proud-r.xOff;
   r.baseYaw=-90;
   r.outMat=mat(C.green,.95);
   if(!r.aR) rollArms(r);
-  if(r.armLen===undefined){r.armLen=1.55+r.aR.len*1.7;r.armPan=r.aR.pan*92*VARIETY;r.armRake=r.aR.rake*44*VARIETY;}
+  if(!r.strips) r.strips=stripsForFrame(r);
   r.jit={fall:[0,1,2,3].map(()=>({z:rr(-0.5,0.5),x:rr(0.15,0.9)})),
     bx:rr(0.7,1.6),bz:rr(-0.7,0.7),
     coil:Array.from({length:9},()=>({r:rr(0.4,1.1),y:rr(0,0.07)})),
     wander:Array.from({length:5},()=>({s:rr(-1,1),y:rr(0,0.06)})),
     poolR:rr(0.55,1.35),poolA:rr(0,Math.PI*2),
     sc:{y:rr(-1,1),p:rr(-1,1),r:rr(-1,1)}};
-  r.standGrp=new THREE.Group();
-  r.bagGrp=new THREE.Group(); G.bags.add(r.bagGrp);
+  r.stripGrp=new THREE.Group();
   r.footGrp=new THREE.Group(); G.foot.add(r.footGrp);
   r.screen=new THREE.Group();r.screen.rotation.order='YXZ';G.disp.add(r.screen);
   r.hdmiGrp=new THREE.Group();G.hdmi.add(r.hdmiGrp);
   r.dcGrp=new THREE.Group();G.dc.add(r.dcGrp);
   r.usbGrp=new THREE.Group();G.usb.add(r.usbGrp);
   r.poolGrp=new THREE.Group();G.pool.add(r.poolGrp);
-  buildStand(r);buildScreenContent(r);
+  buildFrame(r);buildScreenContent(r);
   r.screen.position.set(r.x,r.y,r.z);
   RIGS.push(r);return r;}
 function applyArrayPlacement(){
-  RIGS.forEach(r=>{r.z=BANK_Z+r.u*SPREAD;r.screen.position.set(r.x,r.y,r.z);});
+  RIGS.forEach(r=>{
+    r.z=frameZ(r);
+    r.y=frameY(r);
+    r.x=WALL_X-(r.proud||PROUD_DEF)-r.xOff;
+    clampToWall(r);
+    r.screen.position.set(r.x,r.y,r.z);});
   scene.updateMatrixWorld(true);}
 function applyRotations(){
   const By=+sBy.value,T=+sT.value,S=+sS.value;
@@ -834,29 +869,70 @@ function applyRotations(){
 /* ============================================================
    CABLE
    ============================================================ */
-function cableRun(from,to,jit,phase,slackK){
-  const P=[from.clone()];
-  const behind=Math.max(from.x,to.x)+0.5;
-  [0.78,0.55,0.34,0.16].forEach((f,k)=>{
-    const j=jit.fall[k];
-    P.push(V(behind+j.x*(1-f)*0.7*WANDER,Math.max(0.20,from.y*f),from.z+j.z*(1-f)*1.3*WANDER));});
-  const bx=behind+jit.bx*0.6, bz=from.z+jit.bz*WANDER;
-  const turns=Math.max(0,Math.round((slackK-1)*4));
-  for(let k=0;k<turns;k++){
-    const a=phase+k/Math.max(1,turns)*Math.PI*2*1.3, cj=jit.coil[k%jit.coil.length];
-    P.push(V(bx+cj.r*Math.cos(a)*0.7,0.13+cj.y,bz+cj.r*Math.sin(a)*0.9));}
-  const ex=Math.max(from.x,to.x)+0.45, ez=to.z+jit.bz*0.5*WANDER;
-  const dvec=V(ex-bx,0,ez-bz),dist=dvec.length();if(dist>1e-6)dvec.normalize();
-  const perp=V(-dvec.z,0,dvec.x);
-  const steps=dist>9?5:(dist>4.5?4:3), amp=Math.min(1.4,dist*0.14)*WANDER;
-  for(let k=1;k<=steps;k++){
-    const t=k/(steps+1),w=jit.wander[(k-1)%jit.wander.length];
-    P.push(V(bx+dvec.x*dist*t+perp.x*w.s*amp,0.14+w.y,bz+dvec.z*dist*t+perp.z*w.s*amp));}
-  [0.14,0.34,0.58,0.80].forEach((f,k)=>{
-    const j=jit.fall[k];
-    P.push(V(ex+j.x*(1-f)*0.5*WANDER,Math.max(0.20,to.y*f),to.z+j.z*(1-f)*0.9*WANDER));});
-  P.push(to.clone());
-  return new THREE.CatmullRomCurve3(P,false,'catmullrom',0.42).getPoints(240);}
+function filletPath(W,rad,seg){
+  const out=[W[0].clone()];
+  for(let i=1;i<W.length-1;i++){
+    const p=W[i],a=W[i-1],b=W[i+1];
+    const va=a.clone().sub(p), vb=b.clone().sub(p);
+    const la=va.length(), lb=vb.length();
+    if(la<1e-6||lb<1e-6){out.push(p.clone());continue;}
+    const r2=Math.min(rad,la*0.45,lb*0.45);
+    va.normalize(); vb.normalize();
+    const st=p.clone().addScaledVector(va,r2), en=p.clone().addScaledVector(vb,r2);
+    out.push(st);
+    for(let k=1;k<seg;k++){
+      const t=k/seg, om=1-t;
+      out.push(V(om*om*st.x+2*om*t*p.x+t*t*en.x,
+                 om*om*st.y+2*om*t*p.y+t*t*en.y,
+                 om*om*st.z+2*om*t*p.z+t*t*en.z));}
+    out.push(en);}
+  out.push(W[W.length-1].clone());
+  /* densify the straights so the drawn cable keeps usable tangents */
+  const dense=[out[0]];
+  for(let i=1;i<out.length;i++){
+    const a=out[i-1], b=out[i], d=a.distanceTo(b);
+    const n=Math.max(1,Math.round(d/0.14));
+    for(let k=1;k<=n;k++) dense.push(a.clone().lerp(b,k/n));}
+  return dense;}
+function serviceLoop(at,radius,phase,turns){
+  const P=[], steps=Math.max(8,Math.round(turns*14));
+  for(let k=0;k<=steps;k++){
+    const t=k/steps, a=phase+t*Math.PI*2*turns;
+    const r2=radius*(0.55+0.45*Math.sin(t*Math.PI));
+    P.push(V(at.x-0.012*Math.sin(a*2),at.y+r2*Math.sin(a)*0.85,at.z+r2*Math.cos(a)));}
+  return P;}
+/* both ends sit on the wall: out of the socket, up to a trunk height,
+   along the trunk, then down into the drop */
+/* channels sit on their own plane a few thou apart so they read as layered
+   cable rather than one line when a route makes them share a path */
+function wallRun(from,to,o){
+  const x=WALL_X-CLIP_X-(o.ch||0)*0.022;
+  const zOff=o.jit.bz*0.10*WANDER;
+  const a=V(x,from.y,from.z), b=V(x,to.y,to.z);
+  const W=[from.clone(), a];
+
+  const turns=Math.max(0,(o.slack-1)*1.6);
+  if(turns>0.05){
+    serviceLoop(V(x,from.y,from.z+(from.z<to.z?0.10:-0.10)),
+      0.10+0.09*(o.slack-1),o.phase,turns).forEach(pt=>W.push(pt));}
+
+  switch(ROUTE){
+    case 1:  /* trunk above — over the top of the frames and back down */
+      W.push(V(x,o.topY+zOff,from.z), V(x,o.topY+zOff,to.z)); break;
+    case 2:  /* dogleg — across at the socket height, then drop in */
+      W.push(V(x,from.y,to.z)); break;
+    case 3:  /* skirting — down to the base of the wall, along, back up */
+      W.push(V(x,SKIRT_Y+zOff,from.z), V(x,SKIRT_Y+zOff,to.z)); break;
+    case 4:  /* riser — straight up at the plate, then across to the frame */
+      W.push(V(x,to.y,from.z)); break;
+    case 5:  /* direct — a taut diagonal, no right angles at all */
+      break;
+    default: /* trunk below — the tidy one, under everything */
+      W.push(V(x,o.trunkY+zOff,from.z), V(x,o.trunkY+zOff,to.z));
+  }
+
+  W.push(b, to.clone());
+  return filletPath(W, ROUTE===5?0.05:0.16, 5);}
 const XSEC=[[0,0],[.030,.028],[-.030,.028],[0,-.038]];
 function drawCable(pts,m,g){
   XSEC.forEach(off=>{
@@ -870,32 +946,59 @@ function drawCable(pts,m,g){
     }),m,g);});}
 function buildCabling(r,i){
   clearGroup(r.hdmiGrp);clearGroup(r.dcGrp);clearGroup(r.usbGrp);clearGroup(r.poolGrp);
-  const bank=HUBS.bank.pts[i], play=HUBS.player.pts[i];
+  const bank=PLATES.bank.pts[i], play=PLATES.player.pts[i];
   if(!bank||!play)return;
   const pH=r.entHdmi.getWorldPosition(new THREE.Vector3());
   const pU=r.entUsb.getWorldPosition(new THREE.Vector3());
-  drawCable(cableRun(play,pH,r.jit,r.jit.poolA,SLACK),mat(C.hdmi,.9),r.hdmiGrp);
-  drawCable(cableRun(bank,pU,r.jit,r.jit.poolA+2.1,SLACK),mat(C.usb,.85),r.usbGrp);
-  drawCable(cableRun(bank,play,r.jit,r.jit.poolA+4.2,SLACK*0.8),mat(C.dc,.85),r.dcGrp);
-  const pm=mat(C.cyanDim,.35);
-  const px=Math.max(r.cx,r.x)+0.9, pz=r.cz+r.jit.bz*0.6;
-  for(let k=0;k<4;k++){
-    const f=0.4+k*0.22, pts=[];
-    for(let a=0;a<=40;a++){const t=a/40*Math.PI*2;
-      pts.push(V(px+r.jit.poolR*f*1.1*Math.cos(t+r.jit.poolA),0.10+0.04*Math.sin(t*3),
-                 pz+r.jit.poolR*f*0.85*Math.sin(t+r.jit.poolA)));}
-    line(pts,pm,r.poolGrp);}}
+  /* three trunks at their own heights so the channels read apart */
+  const e=halfExt(r);
+  const w=VARIETY*0.06;
+  const base=Math.min(r.y-e.hy, PLATE.bank.y, PLATE.player.y)-TRUNK_DROP;
+  const top =Math.max(r.y+e.hy, PLATE.bank.y, PLATE.player.y)+TRUNK_DROP;
+  const lo=fitTrunks([base, base-0.16-w, base-0.32-2*w]);
+  const hi=fitTrunks([top,  top +0.16+w, top +0.32+2*w]);
+  const runs=[
+    {from:play, to:pH,  trunkY:lo[0], topY:hi[0], ch:0,
+     phase:r.jit.poolA,     slack:SLACK,     mat:mat(C.hdmi,.9 ), grp:r.hdmiGrp},
+    {from:bank, to:pU,  trunkY:lo[1], topY:hi[1], ch:1,
+     phase:r.jit.poolA+2.1, slack:SLACK,     mat:mat(C.usb ,.85), grp:r.usbGrp},
+    {from:bank, to:play,trunkY:lo[2], topY:hi[2], ch:2,
+     phase:r.jit.poolA+4.2, slack:SLACK*0.8, mat:mat(C.dc  ,.85), grp:r.dcGrp},
+  ];
+  const cm=mat(C.cyanDim,.45);
+  runs.forEach(run=>{
+    const pts=wallRun(run.from,run.to,{trunkY:run.trunkY,topY:run.topY,jit:r.jit,
+      phase:run.phase,slack:run.slack,ch:run.ch});
+    drawCable(pts,run.mat,run.grp);
+    /* clips every ~1.4′ along whatever path the route produced, each one
+       set across the cable rather than assuming the run is horizontal */
+    let acc=0;
+    for(let k=1;k<pts.length;k++){
+      acc+=pts[k].distanceTo(pts[k-1]);
+      if(acc<1.4) continue;
+      acc=0;
+      const t=tangentAt(pts,k);
+      const n=new THREE.Vector3().crossVectors(t,V(1,0,0));
+      if(n.lengthSq()<1e-6) continue;
+      n.normalize().multiplyScalar(0.055);
+      segs([pts[k].clone().sub(n).setX(pts[k].x-0.03),
+            pts[k].clone().add(n).setX(pts[k].x-0.03)],cm,r.poolGrp);
+    }
+  });}
 function rebuildEverything(){
   applyRotations();
-  buildHub('bank');buildHub('player');
+  buildPlate('bank');buildPlate('player');
   RIGS.forEach(buildCabling);
   $('scount').textContent=RIGS.length;
-  $('ccount').textContent=RIGS.length;
-  let span=0;
-  if(RIGS.length){const zs=RIGS.map(r=>r.z);span=Math.max(...zs)-Math.min(...zs);}
   const rep=clashReport();
-  $('rlenNote').textContent=(RIGS.length*3)+' runs · face span '+span.toFixed(2)+
-    "′ · closest columns "+(isFinite(rep.minC)?rep.minC.toFixed(2):'—')+"′ · "+rep.nests+' nests';
+  $('ccount').textContent=rep.strips;
+  let span=0,rise=0;
+  if(RIGS.length){
+    const zs=RIGS.map(r=>r.z), ys=RIGS.map(r=>r.y);
+    span=Math.max(...zs)-Math.min(...zs);
+    rise=Math.max(...ys)-Math.min(...ys);}
+  $('rlenNote').textContent=(RIGS.length*3)+' runs · wall span '+span.toFixed(2)+
+    "′ × "+rise.toFixed(2)+"′ · "+rep.strips+' strips · '+rep.lb.toFixed(1)+' lb';
   refreshAllMedia();}
 
 /* ============================================================
@@ -989,24 +1092,25 @@ function setSelected(r){
   selected=r||null;
   if(selected){
     selected.outMat.color.setHex(0xffffff);
-    $('selInfo').textContent='Panel '+(RIGS.indexOf(selected)+1)+' of '+RIGS.length+
-      ' · riser '+selected.riser.toFixed(2)+"′ · arm "+(selected.armLen*12).toFixed(0)+'″';
+    $('selInfo').textContent='Frame '+(RIGS.indexOf(selected)+1)+' of '+RIGS.length+
+      ' · '+selected.strips+' strips · '+frameLb(selected).toFixed(2)+' lb';
     $('selInfo').className='';$('screenEdit').style.display='';syncScreenPanel();
   } else {
-    $('selInfo').textContent='Nothing selected. Click a panel.';
+    $('selInfo').textContent='Nothing selected. Click a frame.';
     $('selInfo').className='empty';$('screenEdit').style.display='none';}
   renderSelects();}
 function syncScreenPanel(){
   const r=selected;if(!r)return;
   $('nX').value=r.x.toFixed(2);$('nY').value=r.y.toFixed(2);$('nZ').value=r.z.toFixed(2);
-  sAL.value=r.armLen;sAP.value=r.armPan;sAR.value=r.armRake;sBt.value=r.baseTwist||0;
-  $('cbKnuck').checked=!!r.knuck;
-  vAL.textContent=(+r.armLen).toFixed(2)+'′';
-  vAP.textContent=Math.round(r.armPan)+'°';
-  vAR.textContent=Math.round(r.armRake)+'°';
-  vBt.textContent=Math.round(r.baseTwist||0)+'°';
-  $('armNote').textContent='Riser '+r.riser.toFixed(2)+"′ · column at Z "+r.cz.toFixed(2)+
-    "′, X "+r.cx.toFixed(2)+"′. "+(r.armManual?'Set by hand — Solve will leave it alone.':'Solver-placed.');
+  sAL.value=r.strips;sAP.value=r.stripInset;sAR.value=r.proud;sBt.value=r.dropSide||0;
+  $('cbKnuck').checked=!!r.stripManual;
+  vAL.textContent=r.strips;
+  vAP.textContent=(+r.stripInset).toFixed(2);
+  vAR.textContent=(+r.proud).toFixed(3)+'′';
+  vBt.textContent=(r.dropSide<0?'left':r.dropSide>0?'right':'centre');
+  $('armNote').textContent=r.strips+' strips rated '+(r.strips*STRIP_CAP).toFixed(0)+
+    ' lb for '+frameLb(r).toFixed(2)+' lb at '+SAFETY.toFixed(2)+"× · "+
+    (r.stripManual?'set by hand — Solve leaves it alone.':'from the load and the span.');
   sPy.value=r.pYaw;sPt.value=r.pTilt;sPr.value=r.pRoll;
   vPy.textContent=r.pYaw+'°';vPt.textContent=r.pTilt+'°';vPr.textContent=r.pRoll+'°';}
 function pickAt(cx,cy){
@@ -1016,11 +1120,18 @@ function pickAt(cx,cy){
   setSelected(null);}
 function moveTo(p){
   if(!selected)return;
-  selected.x=snap(p.x);selected.y=Math.max(0.6,snap(p.y));selected.z=snap(p.z);
-  selected.u=(selected.z-BANK_Z)/SPREAD;
-  selected.xOff=(GAL_E-STANDOFF)-selected.x;
+  selected.y=snap(p.y);selected.z=snap(p.z);
+  selected.x=snap(Math.min(WALL_X-0.03,p.x));
+  clampToWall(selected);
+  selected.u=SPREAD?(selected.z-BANK_Z)/SPREAD:selected.u;
+  selected.zAdj=0;
+  if(RISE>=0.02){ selected.v=(selected.y-BASE_Y-MOUNT_Y)/RISE;
+                  selected.yAdj=0; selected.yPinned=false; }
+  else          { selected.yAdj=selected.y-(BASE_Y+MOUNT_Y+selected.v*RISE);
+                  selected.yPinned=true; }
+  selected.xOff=WALL_X-(selected.proud||PROUD_DEF)-selected.x;
   selected.screen.position.set(selected.x,selected.y,selected.z);
-  buildStand(selected);scene.updateMatrixWorld(true);
+  buildFrame(selected);scene.updateMatrixWorld(true);
   buildCabling(selected,RIGS.indexOf(selected));syncScreenPanel();}
 
 /* ============================================================
@@ -1071,17 +1182,23 @@ $('selSize').addEventListener('change',e=>{
   if(!selected||!e.target.value)return;
   const [w,h]=e.target.value.split(',').map(Number);
   selected.w=w;selected.h=h;e.target.value='';
-  buildScreenContent(selected);buildStand(selected);scene.updateMatrixWorld(true);
+  if(!selected.stripManual)selected.strips=stripsForFrame(selected);
+  buildScreenContent(selected);buildFrame(selected);scene.updateMatrixWorld(true);
   buildCabling(selected,RIGS.indexOf(selected));refreshAllMedia();syncScreenPanel();});
 
 const sAL=$('sAL'),sAP=$('sAP'),sAR=$('sAR'),sBt=$('sBt');
 const vAL=$('vAL'),vAP=$('vAP'),vAR=$('vAR'),vBt=$('vBt');
 function armChanged(){
   if(!selected)return;
-  selected.armManual=true;
-  selected.armLen=+sAL.value;selected.armPan=+sAP.value;selected.armRake=+sAR.value;
-  selected.baseTwist=+sBt.value;selected.knuck=$('cbKnuck').checked;
-  buildStand(selected);scene.updateMatrixWorld(true);
+  selected.stripManual=true;
+  selected.strips=Math.max(2,+sAL.value);
+  selected.stripInset=+sAP.value;
+  selected.proud=+sAR.value;
+  selected.dropSide=+sBt.value;
+  selected.stripManual=$('cbKnuck').checked||true;
+  selected.x=WALL_X-selected.proud-selected.xOff;
+  selected.screen.position.set(selected.x,selected.y,selected.z);
+  buildScreenContent(selected);buildFrame(selected);scene.updateMatrixWorld(true);
   buildCabling(selected,RIGS.indexOf(selected));clashReport();syncScreenPanel();}
 [sAL,sAP,sAR,sBt].forEach(s=>s.addEventListener('input',armChanged));
 $('cbKnuck').addEventListener('change',armChanged);
@@ -1089,36 +1206,45 @@ $('cbKnuck').addEventListener('change',armChanged);
 const sVar=$('sVar');
 sVar.addEventListener('change',()=>{
   VARIETY=+sVar.value;$('vVar').textContent=VARIETY.toFixed(2);
-  solveStands();rebuildEverything();});
+  rebuildEverything();});
 sVar.addEventListener('input',()=>$('vVar').textContent=(+sVar.value).toFixed(2));
 
-const sSp=$('sSp'),sBz=$('sBz'),sSo=$('sSo'),sDep=$('sDep'),sNst=$('sNst');
+const sSp=$('sSp'),sRs=$('sRs'),sBz=$('sBz'),sSo=$('sSo'),sDep=$('sDep'),sNst=$('sNst');
 function packChanged(){
-  SPREAD=+sSp.value;BANK_Z=+sBz.value;STANDOFF=+sSo.value;
-  DEPTH=+sDep.value;NEST_TOL=+sNst.value;
+  SPREAD=+sSp.value;RISE=+sRs.value;BANK_Z=+sBz.value;MOUNT_Y=+sSo.value;
+  GAP=+sDep.value;SAFETY=+sNst.value;
+  clearAdj();
   $('vSp').textContent=SPREAD.toFixed(2)+'×';
+  $('vRs').textContent=RISE.toFixed(2)+'×';
   $('vBz').textContent=BANK_Z.toFixed(2)+'′';
-  $('vSo').textContent=STANDOFF.toFixed(2)+'′';
-  $('vDep').textContent=DEPTH.toFixed(2)+'′';
-  $('vNst').textContent=NEST_TOL.toFixed(2)+'′';
+  $('vSo').textContent=MOUNT_Y.toFixed(2)+'′';
+  $('vDep').textContent=GAP.toFixed(2)+'′';
+  $('vNst').textContent=SAFETY.toFixed(2)+'×';
+  RIGS.forEach(r=>{if(!r.stripManual)r.strips=stripsForFrame(r);});
   applyArrayPlacement();}
-[sSp,sBz,sSo,sDep,sNst].forEach(s=>{
+[sSp,sRs,sBz,sSo,sDep,sNst].forEach(s=>{
   s.addEventListener('input',packChanged);
-  s.addEventListener('change',()=>{packChanged();solveStands();rebuildEverything();});});
+  s.addEventListener('change',()=>{packChanged();solveFrames();rebuildEverything();});});
 
 const sHbz=$('sHbz'),sHbr=$('sHbr'),sHpz=$('sHpz'),sHpr=$('sHpr'),sHso=$('sHso');
 function hubChanged(){
-  HUB.bank.z=+sHbz.value;HUB.bank.riser=+sHbr.value;
-  HUB.player.z=+sHpz.value;HUB.player.riser=+sHpr.value;HUB.standoff=+sHso.value;
-  $('vHbz').textContent=HUB.bank.z.toFixed(2)+'′';
-  $('vHbr').textContent=HUB.bank.riser.toFixed(2)+'′';
-  $('vHpz').textContent=HUB.player.z.toFixed(2)+'′';
-  $('vHpr').textContent=HUB.player.riser.toFixed(2)+'′';
-  $('vHso').textContent=HUB.standoff.toFixed(2)+'′';
-  buildHub('bank');buildHub('player');}
+  PLATE.bank.z=+sHbz.value;PLATE.bank.y=+sHbr.value;
+  PLATE.player.z=+sHpz.value;PLATE.player.y=+sHpr.value;TRUNK_DROP=+sHso.value;
+  $('vHbz').textContent=PLATE.bank.z.toFixed(2)+'′';
+  $('vHbr').textContent=PLATE.bank.y.toFixed(2)+'′';
+  $('vHpz').textContent=PLATE.player.z.toFixed(2)+'′';
+  $('vHpr').textContent=PLATE.player.y.toFixed(2)+'′';
+  $('vHso').textContent=TRUNK_DROP.toFixed(2)+'′';
+  buildPlate('bank');buildPlate('player');}
 [sHbz,sHbr,sHpz,sHpr,sHso].forEach(s=>{
   s.addEventListener('input',hubChanged);
   s.addEventListener('change',()=>rebuildEverything());});
+
+const sRt=$('sRt');
+sRt.addEventListener('input',()=>{$('vRt').textContent=ROUTES[+sRt.value]||'—';});
+sRt.addEventListener('change',()=>{
+  ROUTE=+sRt.value;$('vRt').textContent=ROUTES[ROUTE]||'—';
+  RIGS.forEach(buildCabling);toast('Routing — '+ROUTES[ROUTE]);});
 
 const sSlk=$('sSlk'),sWan=$('sWan');
 [sSlk,sWan].forEach(s=>{
@@ -1147,12 +1273,15 @@ function perChanged(){
 $('rot90').addEventListener('click',()=>{
   if(!selected)return;
   const t=selected.w;selected.w=selected.h;selected.h=t;
-  buildScreenContent(selected);buildStand(selected);scene.updateMatrixWorld(true);
+  if(!selected.stripManual)selected.strips=stripsForFrame(selected);
+  buildScreenContent(selected);buildFrame(selected);scene.updateMatrixWorld(true);
   buildCabling(selected,RIGS.indexOf(selected));refreshAllMedia();syncScreenPanel();});
 $('resetOne').addEventListener('click',()=>{
   if(!selected)return;
-  selected.armManual=false;rollArms(selected);
-  solveStands();rebuildEverything();syncScreenPanel();toast('Re-solved');});
+  selected.stripManual=false;selected.strips=stripsForFrame(selected);
+  selected.yAdj=0;selected.zAdj=0;selected.yPinned=false;
+  rollArms(selected);
+  solveFrames();rebuildEverything();syncScreenPanel();toast('Re-solved');});
 $('resetAll').addEventListener('click',()=>{
   sBy.value=sT.value=sS.value=0;
   RIGS.forEach(r=>{r.pYaw=r.pTilt=r.pRoll=0;});
@@ -1161,46 +1290,49 @@ $('resetAll').addEventListener('click',()=>{
   vPy.textContent=vPt.textContent=vPr.textContent='0°';});
 
 $('btnSolve').addEventListener('click',()=>{
-  solveStands();rebuildEverything();
-  toast('Stands solved — bases nested');});
+  clearAdj();applyArrayPlacement();solveFrames();rebuildEverything();
+  toast('Layout solved — frames clear on the wall');});
 $('btnTighten').addEventListener('click',()=>{
   /* squeeze the face plane until something actually fouls, then back off */
-  let s=SPREAD, lastGood=SPREAD;
+  let sp=SPREAD, lastGood=SPREAD;
   for(let k=0;k<26;k++){
-    s=Math.max(+sSp.min,s-0.055);SPREAD=s;
-    applyArrayPlacement();solveStands(false);
-    const rep=clashReport();
-    if(rep.bad>0)break;
-    lastGood=s;}
+    sp=Math.max(+sSp.min,sp-0.055);SPREAD=sp;
+    clearAdj();applyArrayPlacement();solveFrames();
+    if(clashReport().bad>0)break;
+    lastGood=sp;}
   SPREAD=lastGood;sSp.value=SPREAD;$('vSp').textContent=SPREAD.toFixed(2)+'×';
-  applyArrayPlacement();solveStands(false);rebuildEverything();
+  clearAdj();applyArrayPlacement();solveFrames();rebuildEverything();
   toast('Tightest legal spacing — '+SPREAD.toFixed(2)+'×');});
 $('btnReroll').addEventListener('click',()=>{
-  RIGS.forEach(r=>{if(!r.armManual)rollArms(r);});
-  solveStands();rebuildEverything();
+  RIGS.forEach(r=>{if(!r.stripManual)rollArms(r);});
+  clearAdj();applyArrayPlacement();solveFrames();rebuildEverything();
   if(selected)syncScreenPanel();toast('Re-rolled and re-solved');});
 $('btnClash').addEventListener('click',()=>{
   const rep=clashReport();
   G.nest.visible=true;
   document.querySelector('#legend input[data-k="nest"]').checked=true;
-  toast(rep.bad?rep.bad+' clash — hit Solve':'Clear · '+rep.nests+' nests');});
+  toast(rep.bad?rep.bad+' problem'+(rep.bad>1?'s':'')+' — hit Solve'
+               :'Clear · '+rep.strips+' strips · '+rep.lb.toFixed(1)+' lb');});
 $('btnSnap').addEventListener('click',()=>{
   SNAP=SNAP>0?0:0.1;
   $('btnSnap').textContent=SNAP>0?'Snap 0.1′':'Snap off';
   $('btnSnap').classList.toggle('on',SNAP>0);});
 function mediaName(id){const m=findMedia(id);return m?m.name:null;}
 $('btnSave').addEventListener('click',()=>{
-  const data={version:2,array:{z:BANK_Z,spread:SPREAD,standoff:STANDOFF,depth:DEPTH,nest:NEST_TOL},
-    variety:VARIETY,hub:JSON.parse(JSON.stringify(HUB)),cable:{slack:SLACK,wander:WANDER},
+  const data={version:1,wall:{z:BANK_Z,spread:SPREAD,rise:RISE,mountY:MOUNT_Y,gap:GAP,safety:SAFETY},
+    variety:VARIETY,plate:JSON.parse(JSON.stringify(PLATE)),
+    cable:{slack:SLACK,wander:WANDER,trunk:TRUNK_DROP,route:ROUTE},
     global:{arrayYaw:+sBy.value,tilt:+sT.value,scatter:+sS.value},
-    rigs:RIGS.map(r=>({u:+r.u.toFixed(3),y:+r.y.toFixed(3),xOff:+r.xOff.toFixed(3),
+    rigs:RIGS.map(r=>({u:+r.u.toFixed(3),v:+r.v.toFixed(3),
+      yAdj:+(r.yAdj||0).toFixed(3),zAdj:+(r.zAdj||0).toFixed(3),yPinned:!!r.yPinned,
+      y:+r.y.toFixed(3),xOff:+r.xOff.toFixed(3),
       w:+r.w.toFixed(3),h:+r.h.toFixed(3),
-      armLen:+r.armLen.toFixed(3),armPan:+r.armPan.toFixed(1),armRake:+r.armRake.toFixed(1),
-      baseTwist:+(r.baseTwist||0).toFixed(1),knuck:!!r.knuck,knuckAng:r.knuckAng,
-      armManual:!!r.armManual,pYaw:r.pYaw,pTilt:r.pTilt,pRoll:r.pRoll,media:mediaName(r.media)}))};
+      strips:r.strips,stripInset:+r.stripInset.toFixed(3),proud:+r.proud.toFixed(3),
+      dropSide:r.dropSide||0,stripManual:!!r.stripManual,
+      pYaw:r.pYaw,pTilt:r.pTilt,pRoll:r.pRoll,media:mediaName(r.media)}))};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='portable-array-v2.json';a.click();
+  a.href=URL.createObjectURL(blob);a.download='wall-frames.json';a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast('Layout saved');});
 $('btnLoad').addEventListener('click',()=>$('layoutIn').click());
 $('layoutIn').addEventListener('change',e=>{
@@ -1212,27 +1344,36 @@ $('layoutIn').addEventListener('change',e=>{
 function loadLayout(d){
   setSelected(null);
   [...RIGS].forEach(r=>{
-    clearGroup(r.standGrp);if(r.standGrp.parent)r.standGrp.parent.remove(r.standGrp);
-    clearGroup(r.bagGrp);G.bags.remove(r.bagGrp);
+    clearGroup(r.stripGrp);if(r.stripGrp.parent)r.stripGrp.parent.remove(r.stripGrp);
     clearGroup(r.footGrp);G.foot.remove(r.footGrp);
     clearGroup(r.screen);G.disp.remove(r.screen);
     ['hdmiGrp','dcGrp','usbGrp','poolGrp'].forEach((k,i)=>{
       clearGroup(r[k]);G[['hdmi','dc','usb','pool'][i]].remove(r[k]);});});
   RIGS=[];
-  if(d.array){BANK_Z=d.array.z;SPREAD=d.array.spread;STANDOFF=d.array.standoff;
-    DEPTH=d.array.depth??DEPTH;NEST_TOL=d.array.nest??NEST_TOL;
-    sBz.value=BANK_Z;sSp.value=SPREAD;sSo.value=STANDOFF;sDep.value=DEPTH;sNst.value=NEST_TOL;}
+  if(d.wall){BANK_Z=d.wall.z;SPREAD=d.wall.spread;RISE=d.wall.rise??RISE;
+    MOUNT_Y=d.wall.mountY??MOUNT_Y;GAP=d.wall.gap??GAP;SAFETY=d.wall.safety??SAFETY;
+    sBz.value=BANK_Z;sSp.value=SPREAD;sRs.value=RISE;
+    sSo.value=MOUNT_Y;sDep.value=GAP;sNst.value=SAFETY;}
   if(d.variety!==undefined){VARIETY=d.variety;sVar.value=VARIETY;}
-  if(d.hub){Object.assign(HUB.bank,d.hub.bank);Object.assign(HUB.player,d.hub.player);
-    HUB.standoff=d.hub.standoff;
-    sHbz.value=HUB.bank.z;sHbr.value=HUB.bank.riser;
-    sHpz.value=HUB.player.z;sHpr.value=HUB.player.riser;sHso.value=HUB.standoff;}
-  if(d.cable){SLACK=d.cable.slack;WANDER=d.cable.wander;sSlk.value=SLACK;sWan.value=WANDER;}
+  if(d.plate){Object.assign(PLATE.bank,d.plate.bank);Object.assign(PLATE.player,d.plate.player);
+    sHbz.value=PLATE.bank.z;sHbr.value=PLATE.bank.y;
+    sHpz.value=PLATE.player.z;sHpr.value=PLATE.player.y;}
+  if(d.cable){SLACK=d.cable.slack;WANDER=d.cable.wander;
+    TRUNK_DROP=d.cable.trunk??TRUNK_DROP;ROUTE=d.cable.route??ROUTE;
+    sSlk.value=SLACK;sWan.value=WANDER;sHso.value=TRUNK_DROP;
+    sRt.value=ROUTE;$('vRt').textContent=ROUTES[ROUTE]||'—';}
   (d.rigs||[]).forEach(spec=>{
     const r=makeRig(spec);
     if(spec.media){const m=findMediaByName(spec.media);r.media=m?m.id:null;}});
   if(d.global){sBy.value=d.global.arrayYaw||0;sT.value=d.global.tilt||0;sS.value=d.global.scatter||0;}
-  packChanged();hubChanged();globalChanged();rebuildEverything();renderSelects();}
+  /* the file already holds a resolved layout, so restore it rather than
+     re-deriving it — packChanged clears the solver corrections, so put the
+     saved ones back afterwards and place from those. Re-solving here would
+     quietly discard anything that had been positioned by hand. */
+  const adj=(d.rigs||[]).map(sp=>({y:+sp.yAdj||0, z:+sp.zAdj||0, p:!!sp.yPinned}));
+  packChanged();hubChanged();globalChanged();
+  RIGS.forEach((r,i)=>{ if(adj[i]){r.yAdj=adj[i].y;r.zAdj=adj[i].z;r.yPinned=adj[i].p;} });
+  applyArrayPlacement();rebuildEverything();renderSelects();}
 document.querySelectorAll('#legend input[data-k]').forEach(cb=>{
   cb.addEventListener('change',()=>{G[cb.dataset.k].visible=cb.checked;});});
 $('tglMedia').addEventListener('change',e=>{RIGS.forEach(r=>{r.faceMat.visible=e.target.checked;});});
@@ -1246,16 +1387,16 @@ $('tglDims').addEventListener('change',e=>showDims=e.target.checked);
 const DIMS=[
   {p:V(0,0.1,SOUTH+2.6),t:"78′-10½″ gallery"},
   {p:V(WEST-2.8,0.1,0),t:"47′-1½″"},
-  {p:V(BOX.x0-3.4,0.1,(BOX.z0+BOX.z1)/2),t:"31′-0⅛″ — the array wall"},
+  {p:V(BOX.x0-3.4,0.1,(BOX.z0+BOX.z1)/2),t:"31′-0⅛″ — the mounting wall"},
   {p:V(WEST+1,GALLERY.ridge+1.0,0),t:"ridge 27′-0″"},
   {p:V(WEST+5,RIG_Y+1.0,-2.5),t:"rig 21′-0″"},
 ];
 const CALLOUTS=[
-  {p:V(GAL_E-HUB.standoff,HUB.bank.riser+1.4,HUB.bank.z),t:'5 × power bank — stacked',c:'or'},
-  {p:V(GAL_E-HUB.standoff,HUB.player.riser+1.4,HUB.player.z),t:'5 × media player — stacked',c:'or'},
-  {p:V(GAL_E-4.2,7.2,-2.5),t:'5 × 7″ HDMI · one per stand',c:'gr'},
-  {p:V(GAL_E-7.5,0.55,-2.5),t:'legs at 10⅜″ · 8⅜″ · 6⅜″ — bases nest',c:'or'},
-  {p:V(GAL_E-8,0.9,9),t:'3 runs per channel',c:'cy'},
+  {p:V(WALL_X-1.2,PLATE.bank.y+1.1,PLATE.bank.z),t:'5 × power bank — stripped to the wall',c:'or'},
+  {p:V(WALL_X-1.2,PLATE.player.y+1.1,PLATE.player.z),t:'5 × media player — stripped to the wall',c:'or'},
+  {p:V(WALL_X-2.4,7.2,-2.5),t:'5 × 7″ frames · flat to the wall',c:'gr'},
+  {p:V(WALL_X-2.0,1.5,-2.5),t:'command strips — 4 lb apiece, pull tabs down',c:'or'},
+  {p:V(WALL_X-2.0,1.05,7.5),t:'3 runs per channel · right-angle trunks',c:'cy'},
 ];
 const labelHost=$('labels'),tagEls=[];
 function makeTag(t,cls){const d=document.createElement('div');
@@ -1266,7 +1407,7 @@ DIMS.forEach(d=>tagEls.push({v:d.p,el:makeTag(d.t,'dim'),group:'dims'}));
 /* ============================================================
    CAMERA + INPUT
    ============================================================ */
-const cam={target:V(26,4.5,-2.5),r:34,theta:-0.78,phi:1.20};
+const cam={target:V(30,5.0,-2.5),r:34,theta:-0.78,phi:1.20};
 function applyCam(){
   cam.phi=Math.max(0.06,Math.min(Math.PI-0.06,cam.phi));
   cam.r=Math.max(2,Math.min(340,cam.r));
@@ -1358,14 +1499,14 @@ addEventListener('keydown',e=>{
 const HALF=Math.PI/2;
 const VIEWS={
   gallery: {t:[20,6,-2.5],r:44,th:-0.72,ph:1.14,o:false},
-  plan:    {t:[GAL_E-7,0,-2.5],r:26,th:0.00,ph:0.06,o:true},
-  faceOn:  {t:[GAL_E-6,5.0,-2.5],r:22,th:-HALF,ph:HALF,o:true},
-  approach:{t:[GAL_E-12,4.8,-2.5],r:24,th:-1.45,ph:1.40,o:false},
-  grip:    {t:[GAL_E-6.5,4.6,-3],r:9,th:-1.10,ph:1.26,o:false},
-  behind:  {t:[GAL_E-4.5,5.0,-2.5],r:17,th:HALF,ph:1.30,o:false},
-  bases:   {t:[GAL_E-7,0.7,-2.5],r:12,th:-0.85,ph:1.46,o:false},
-  banks:   {t:[GAL_E-9,4.6,-9.5],r:8,th:-1.05,ph:1.24,o:false},
-  floor:   {t:[GAL_E-8,0.5,-1],r:18,th:-0.90,ph:1.44,o:false}
+  plan:    {t:[WALL_X-5,0,-2.5],r:26,th:0.00,ph:0.06,o:true},
+  faceOn:  {t:[WALL_X-1,5.0,-2.5],r:20,th:-HALF,ph:HALF,o:true},
+  approach:{t:[WALL_X-14,5.2,-2.5],r:24,th:-1.45,ph:1.40,o:false},
+  grip:    {t:[WALL_X-0.6,5.05,-4.05],r:3.2,th:-1.15,ph:1.30,o:false},
+  behind:  {t:[WALL_X-1.4,5.0,-2.5],r:11,th:-2.05,ph:1.34,o:false},
+  bases:   {t:[WALL_X-1.0,2.4,-2.5],r:13,th:-1.35,ph:1.42,o:false},
+  banks:   {t:[WALL_X-1.2,3.0,-6.4],r:4.2,th:-1.15,ph:1.30,o:false},
+  floor:   {t:[WALL_X-1.2,3.0,3.6],r:4.2,th:-1.15,ph:1.30,o:false}
 };
 const orthoBtn=$('orthoBtn');
 function setOrtho(on){useOrtho=on;activeCam=on?ortho:persp;orthoBtn.classList.toggle('on',on);applyCam();}
@@ -1379,21 +1520,24 @@ document.querySelectorAll('#views button[data-v]').forEach(b=>{
 /* ---------- boot ---------- */
 $('vSp').textContent=SPREAD.toFixed(2)+'×';
 $('vBz').textContent=BANK_Z.toFixed(2)+'′';
-$('vSo').textContent=STANDOFF.toFixed(2)+'′';
-$('vDep').textContent=DEPTH.toFixed(2)+'′';
-$('vNst').textContent=NEST_TOL.toFixed(2)+'′';
+$('vRs').textContent=RISE.toFixed(2)+'×';
+$('vSo').textContent=MOUNT_Y.toFixed(2)+'′';
+$('vDep').textContent=GAP.toFixed(2)+'′';
+$('vNst').textContent=SAFETY.toFixed(2)+'×';
 $('vVar').textContent=VARIETY.toFixed(2);
-$('vHbz').textContent=HUB.bank.z.toFixed(2)+'′';
-$('vHbr').textContent=HUB.bank.riser.toFixed(2)+'′';
-$('vHpz').textContent=HUB.player.z.toFixed(2)+'′';
-$('vHpr').textContent=HUB.player.riser.toFixed(2)+'′';
-$('vHso').textContent=HUB.standoff.toFixed(2)+'′';
+$('vHbz').textContent=PLATE.bank.z.toFixed(2)+'′';
+$('vHbr').textContent=PLATE.bank.y.toFixed(2)+'′';
+$('vHpz').textContent=PLATE.player.z.toFixed(2)+'′';
+$('vHpr').textContent=PLATE.player.y.toFixed(2)+'′';
+$('vHso').textContent=TRUNK_DROP.toFixed(2)+'′';
+$('vRt').textContent=ROUTES[ROUTE];
 $('vSlk').textContent=SLACK.toFixed(2)+'×';
 $('vWan').textContent=WANDER.toFixed(2);
 DEFAULT_RIGS.forEach(spec=>makeRig(spec));
-buildHub('bank');buildHub('player');
+buildPlate('bank');buildPlate('player');
 scene.updateMatrixWorld(true);
-solveStands();
+solveFrames();
+applyArrayPlacement();
 rebuildEverything();
 renderSelects();
 

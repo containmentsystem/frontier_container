@@ -3,58 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>installations</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23000'/%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%2300ff00' stroke-width='1.4'/%3E%3C/svg%3E">
+<title>hero_Render</title>
+<meta name="description" content="To-scale wireframe of the hero render: screen bank, pallet rack and cable runs.">
 <style>
+  :root{
+    --green:#00FF41;
+    --bg:#111111;
+    --dim:#7a7a7a;
+    --ring:132px;       /* orbit radius at rest */
+    --ring-hover:158px; /* orbit radius on hover */
+    --dot:16px;
+  }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#000;
-    font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;
-    text-transform:lowercase;-webkit-text-size-adjust:100%}
-  body{display:flex;align-items:center;justify-content:center;gap:9vw;
-    flex-wrap:wrap;padding:7vw 5vw}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    font:12px/1.5 Helvetica,"Helvetica Neue",Arial,sans-serif;color:var(--dim);
+    -webkit-tap-highlight-color:transparent;
+  }
 
-  a{display:flex;flex-direction:column;align-items:center;gap:22px;
-    text-decoration:none;opacity:.72;transition:opacity .45s ease}
-  a:hover,a:focus-visible{opacity:1;outline:none}
+  .enter{
+    position:relative;display:block;
+    width:calc(var(--ring-hover)*2 + var(--dot));
+    height:calc(var(--ring-hover)*2 + var(--dot));
+    text-decoration:none;color:inherit;
+  }
+  .enter:focus{outline:none}
 
-  svg{display:block;width:min(24vw,205px);height:min(24vw,205px);
-    transform-origin:50% 50%}
-  .collage svg{animation:spin 34s linear infinite}
-  .array   svg{animation:spin 34s linear infinite reverse}
-  .wall    svg{animation:spin 41s linear infinite}
+  .orbit{
+    position:absolute;inset:0;
+    animation:spin 14s linear infinite;
+  }
+  .orbit i{
+    position:absolute;top:50%;left:50%;
+    width:var(--dot);height:var(--dot);margin:calc(var(--dot)/-2);
+    border-radius:50%;background:var(--green);
+    transform:rotate(var(--a)) translateY(calc(var(--ring)*-1));
+    transition:transform .5s cubic-bezier(.22,1,.36,1), opacity .5s;
+    opacity:.85;
+  }
+  .enter:hover .orbit i,
+  .enter:focus-visible .orbit i{
+    transform:rotate(var(--a)) translateY(calc(var(--ring-hover)*-1));
+    opacity:1;
+  }
+  .enter:active .orbit i{
+    transform:rotate(var(--a)) translateY(calc(var(--ring)*-0.94));
+  }
+  .enter:focus-visible .orbit i{box-shadow:0 0 0 3px rgba(0,255,65,.28)}
 
-  circle{fill:none;stroke-width:1.25;vector-effect:non-scaling-stroke}
-  .green circle{stroke:#00ff00}
-  .white circle{stroke:#fff}
-  .collage circle{stroke-dasharray:215.327 36}
-  .array   circle{stroke-dasharray:101.664 24}
-  .wall    circle{stroke-dasharray:63.776 20}
-
-  span{font-size:12px;letter-spacing:.16em;color:#555;
-    transition:color .45s ease}
-  .green:hover span,.green:focus-visible span{color:#00ff00}
-  .white:hover span,.white:focus-visible span{color:#fff}
+  .label{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:5px;text-align:center;
+  }
+  .label b{
+    font-size:12px;font-weight:400;color:#eee;letter-spacing:.02em;
+  }
+  .label span{color:var(--dim);transition:color .4s}
+  .enter:hover .label span,.enter:focus-visible .label span{color:var(--green)}
 
   @keyframes spin{to{transform:rotate(360deg)}}
-  @media (prefers-reduced-motion:reduce){svg{animation:none}}
-  @media (max-width:620px){body{gap:16vw}}
+
+  @media (max-width:520px){
+    :root{--ring:96px;--ring-hover:116px;--dot:13px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .orbit{animation:none}
+    .orbit i{transition:none}
+  }
 </style>
 </head>
 <body>
 
-<a class="green collage" href="collage.html">
-  <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40"/></svg>
-  <span>screen collage</span>
-</a>
-
-<a class="white array" href="array.html">
-  <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40"/></svg>
-  <span>portable array</span>
-</a>
-
-<a class="green wall" href="wall.html">
-  <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40"/></svg>
-  <span>wall frames</span>
+<a class="enter" href="wireframe.html">
+  <span class="orbit" aria-hidden="true">
+    <i style="--a:0deg"></i><i style="--a:36deg"></i><i style="--a:72deg"></i><i style="--a:108deg"></i><i style="--a:144deg"></i>
+    <i style="--a:180deg"></i><i style="--a:216deg"></i><i style="--a:252deg"></i><i style="--a:288deg"></i><i style="--a:324deg"></i>
+  </span>
+  <span class="label">
+    <b>hero_Render</b>
+    <span>initialize</span>
+  </span>
 </a>
 
 </body>

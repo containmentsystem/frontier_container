@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hydra preset 1 · midi</title>
+  <script src="https://cdn.jsdelivr.net/npm/hydra-synth/dist/hydra-synth.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; cursor: none; }
+    #hydra-canvas { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; background: #000; }
+    #code {
+      position: fixed; inset: 0; margin: 0; padding: 24px; box-sizing: border-box;
+      overflow: auto; color: #fff; background: rgba(0,0,0,0.55);
+      font: 13px/1.45 Menlo, Consolas, monospace; white-space: pre; z-index: 10;
+    }
+    #code[hidden] { display: none; }
+    #err { position: fixed; left: 0; right: 0; bottom: 0; margin: 0; padding: 8px 12px; color: #f66; background: rgba(0,0,0,0.8); font: 12px/1.4 monospace; white-space: pre-wrap; z-index: 20; }
+    #err[hidden] { display: none; }
+    /* midi monitor: Ctrl+Shift+M. shows every message so you can map the knobs without guessing */
+    #midi { position: fixed; top: 0; right: 0; margin: 0; padding: 10px 14px; color: #00FF41; background: rgba(0,0,0,0.8); font: 12px/1.5 Menlo, Consolas, monospace; white-space: pre; z-index: 30; max-width: 46vw; }
+    #midi[hidden] { display: none; }
+    /* back to the index. fades in on mouse move, so it is invisible on a kiosk with no mouse */
+    #back { position: fixed; left: 14px; top: 12px; z-index: 40; color: #7a7a7a; text-decoration: none;
+            font: 12px/1.5 Helvetica, Arial, sans-serif; opacity: 0; transition: opacity .35s; }
+    #back:hover { color: #EE8B2E; }
+    body.hascursor #back { opacity: .8; }
+  </style>
+</head>
+<body>
+  <a id="back" href="index.html">&larr; frontier_container</a>
+  <canvas id="hydra-canvas"></canvas>
+  <pre id="code" hidden></pre>
+  <pre id="err" hidden></pre>
+  <pre id="midi" hidden></pre>
+
+  <!-- =====================================================================
+       MIDI MAP — edit these to match your controller.
+       Open the monitor (Ctrl+Shift+M), turn each knob, read the CC number.
+       ===================================================================== -->
+  <script>
+    window.MIDI_MAP = {
+      blend:     1,   // CC → blend amount into the merge layer
+      contrast:  2,   // CC → contrast of the merge and green layers
+      sortX:     3,   // CC → pxsort direction (green pixels layer)
+      sortY:     4,   // CC → pysort direction (merge layer)
+      grid:      5,   // CC → dither grid scale
+      speed:     7,   // CC → global hydra speed  (CC7 is "volume" on most controllers)
+    }
+    // hard render resolution. object-fit: cover in the CSS scales it to fill the window.
+    window.RENDER_W = 800
+    window.RENDER_H = 840
+  </script>
+
+  <script id="sketch" type="text/plain">
+await loadScript("https://metagrowing.org/extra-shaders-for-hydra/lib-noise.js")
+await loadScript("https://metagrowing.org/extra-shaders-for-hydra/lib-screen.js")
+await loadScript("https://cdn.jsdelivr.net/gh/geikha/hyper-hydra@latest/hydra-blend.js")
+await loadScript("https://cdn.jsdelivr.net/gh/geikha/hyper-hydra@latest/hydra-arithmetics.js")
+
+const seed1 = 123
+const seed2 = 124
+
+// ---- live hooks: each returns a FUNCTION so hydra re-reads the knob every frame.
+//      knob(cc, lo, hi, dflt) gives dflt until that knob has been moved once.
+const M = window.MIDI_MAP
+const blendDt    = (amt) => knob(M.blend,    0.0, 0.30, amt)
+const contrastDt = (amt) => knob(M.contrast, 0.8, 1.60, amt)
+const sortDirX   = ()    => knob(M.sortX,   -1,   1,    1)
+const sortDirY   = ()    => knob(M.sortY,   -1,   1,    1)
+const gridScale  = ()    => knob(M.grid,     0.5, 4.0,  1)
+
+const pal = {
+  cBlack:  { r: 0.8875, g: 0.8875, b: 0.8875 },
+  cMid:    { r: 0.9875, g: 0.4157894736842105, b: 0.8329836415362727 },
+  cWhite:  { r: 0.7474845201238389, g: 0.4276315789473685, b: 1 },
+  cDither: { r: 0.29605263157894735, g: 0.9375, b: 0.5794828641370868 },
+}
+
+// VISUAL LAYER 1
+osc(120, 0.1, 1)
+  .rotate(1.57, 2)
+  .modulate(noise(10, 6.6).pixelate(23, 11).rotate(seed1, 12.350000000000001))
+  .modulateRotate(noise(1, 0.5).rotate(seed1, 0.75), 1)
+  .scale(3.5)
+  .pixelate(1324, 1460)
+  .out(o4)
+
+// VISUAL LAYER 2
+osc(65, 0.37, 0)
+  .rotate(1.79, 1.52)
+  .modulate(noise(11.200000000000001, 0.5).pixelate(31, 12).rotate(seed2, 15.450000000000001))
+  .modulateRotate(noise(1, 0.5).rotate(seed2, 0.75), 1.2850000000000001)
+  .scale(77.3)
+  .pixelate(207, 5015)
+  .out(o6)
+
+// VISUAL LAYER 3
+unoise(5.2, 0.1).pixelate(256, 256)
+  .darken(unoise(5.2, 0.1).pixelate(128, 128))
+  .darken(unoise(5.2, 0.1).pixelate(64, 64))
+  .darken(unoise(5.2, 0.1).pixelate(32, 32))
+  .darken(unoise(5.2, 0.1).pixelate(16, 16))
+  .darken(unoise(5.2, 0.1).pixelate(8, 8))
+  .darken(unoise(5.2, 0.1).pixelate(4, 4))
+  .darken(unoise(5.2, 0.1).pixelate(2, 2))
+  .amp(20)
+  .mod(1.001)
+  .out(o0)
+
+// MERGE LAYER 1 & 2
+src(o1)
+  .pysort(0.449, () => window.frame++, 0, sortDirY())
+  .blend(src(o4).blend(o6, 7.2540000000000004).blend(o0, 0.535), blendDt(0.08))
+  .contrast(contrastDt(1.131))
+  .out(o1)
+
+// GREEN PIXELS LAYER
+src(o5)
+  .invert()
+  .pxsort(0.01, () => window.frame++, sortDirX(), 0)
+  .blend(o1, blendDt(0.05))
+  .contrast(contrastDt(1.0479999999999998))
+  .out(o5)
+
+const greenPixels = () =>
+  solid(pal.cDither.r, pal.cDither.g, pal.cDither.b)
+    .mask(src(o5).diff(src(o1).scrollY(4.4094999999999995)).thresh(0.4, 0.4).dither4(gridScale()))
+
+// COLOR LAYER 1
+const midMask = () => src(o1).thresh(0.1).mult(src(o1).thresh(0.8).invert())
+
+solid(pal.cBlack.r, pal.cBlack.g, pal.cBlack.b)
+  .mult(src(o1).thresh(0.1).invert())
+  .add(solid(pal.cMid.r, pal.cMid.g, pal.cMid.b).mult(midMask()))
+  .add(solid(pal.cWhite.r, pal.cWhite.g, pal.cWhite.b).mult(src(o1).thresh(0.8)))
+  .out(o2)
+
+// POST PROCESSING
+const highMask = () => src(o1).thresh(0.8, 0.15)
+
+src(o2)
+  .modulate(noise(596, 5), 0.002)
+  .mult(osc(9110000).add(solid(0.6, 0.6, 0.6)))
+  .add(noise(1650, 20).luma(0.6, 0.1), 0.15)
+  .modulate(osc(6.75, 0.3, 0), 0.007499999999999875)
+  .scale(1.02, 1.02, 1)
+  .brightness(-0.1)
+  .mult(highMask().invert())
+  .add(src(o2).add(noise(500, 20).luma(0.6, 0.1), 0.15).mult(highMask()))
+  .layer(greenPixels())
+  .out(o3)
+
+
+window.baseSpeed = 0.05399999999999999
+speed = window.baseSpeed
+
+render(o3)
+  </script>
+
+  <script>
+    // ---- canvas: fixed 800 x 840 by default. ?res=WxH still overrides it.
+    const canvas = document.getElementById('hydra-canvas')
+    const resParam = new URLSearchParams(location.search).get('res')
+    const fixed = resParam && /^\d+x\d+$/.test(resParam)
+      ? resParam.split('x').map(Number)
+      : [window.RENDER_W, window.RENDER_H]
+    canvas.width = fixed[0]
+    canvas.height = fixed[1]
+
+    const hydra = new Hydra({
+      canvas,
+      detectAudio: false,
+      precision: 'mediump',
+      numOutputs: 8,
+      numSources: 8,
+    })
+    window.hydraSynth = hydra
+
+    // ---- MIDI -------------------------------------------------------------
+    // Web MIDI needs a secure context: https:// or http://localhost.
+    // file:// and http://<other-machine> will fail with SecurityError.
+    window.midi = { cc: {}, note: {}, last: 'no messages yet', ok: false }
+    const midiEl = document.getElementById('midi')
+
+    // knob(cc, lo, hi, dflt): returns a function hydra calls every frame.
+    // dflt is used until the knob has moved, so the sketch opens exactly as authored.
+    window.knob = (cc, lo, hi, dflt) => () =>
+      window.midi.cc[cc] === undefined ? dflt : lo + window.midi.cc[cc] * (hi - lo)
+
+    function midiStatus() {
+      const M = window.MIDI_MAP
+      const v = (cc) => window.midi.cc[cc] === undefined ? '  --' : String(window.midi.cc[cc].toFixed(2)).padStart(4)
+      midiEl.textContent =
+`midi ${window.midi.ok ? 'connected' : 'NOT connected'}   ${window.isSecureContext ? '' : '(insecure context — midi blocked)'}
+last: ${window.midi.last}
+
+blend    cc${M.blend}   ${v(M.blend)}
+contrast cc${M.contrast}   ${v(M.contrast)}
+sortX    cc${M.sortX}   ${v(M.sortX)}
+sortY    cc${M.sortY}   ${v(M.sortY)}
+grid     cc${M.grid}   ${v(M.grid)}
+speed    cc${M.speed}   ${v(M.speed)}   -> ${typeof speed === 'number' ? speed.toFixed(3) : '?'}
+
+ctrl+shift+M hide · ctrl+shift+H code`
+    }
+
+    async function initMidi() {
+      if (!window.isSecureContext) throw new Error('not a secure context — serve from http://localhost or https://')
+      if (!navigator.requestMIDIAccess) throw new Error('Web MIDI not available in this browser')
+      const access = await navigator.requestMIDIAccess()
+      const attach = () => {
+        let n = 0
+        for (const input of access.inputs.values()) {
+          n++
+          input.onmidimessage = (e) => {
+            const [status, d1, d2] = e.data
+            const type = status & 0xf0
+            const ch = (status & 0x0f) + 1
+            if (type === 0xB0) {                                   // control change
+              window.midi.cc[d1] = d2 / 127
+              window.midi.last = `cc ${d1} = ${d2}  (ch ${ch})`
+              if (d1 === window.MIDI_MAP.speed) {
+                // speed is a hydra global, not a shader parameter, so set it directly
+                speed = window.baseSpeed * (0.2 + (d2 / 127) * 3.0)
+              }
+            } else if (type === 0x90 && d2 > 0) {                  // note on
+              window.midi.note[d1] = d2 / 127
+              window.midi.last = `note on ${d1} vel ${d2}  (ch ${ch})`
+            } else if (type === 0x80 || (type === 0x90 && d2 === 0)) {  // note off
+              window.midi.note[d1] = 0
+              window.midi.last = `note off ${d1}  (ch ${ch})`
+            }
+            midiStatus()
+          }
+        }
+        window.midi.ok = n > 0
+        console.log('midi inputs:', n)
+        midiStatus()
+      }
+      attach()
+      access.onstatechange = attach        // hot-plug: re-attach when a controller appears
+    }
+    initMidi().catch(err => {
+      console.error('midi:', err)
+      window.midi.last = String(err.message || err)
+      midiStatus()
+    })
+    midiStatus()
+
+    // ---- show the back link only when a mouse is present
+    let cursorTimer
+    window.addEventListener('mousemove', () => {
+      document.body.classList.add('hascursor')
+      document.body.style.cursor = 'default'
+      clearTimeout(cursorTimer)
+      cursorTimer = setTimeout(() => {
+        document.body.classList.remove('hascursor')
+        document.body.style.cursor = 'none'
+      }, 2500)
+    })
+
+    // ---- overlays
+    const source = document.getElementById('sketch').textContent.trim()
+    const codeEl = document.getElementById('code')
+    codeEl.textContent = source
+    window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.code === 'KeyH') { e.preventDefault(); codeEl.hidden = !codeEl.hidden }
+      if (e.ctrlKey && e.shiftKey && e.code === 'KeyM') { e.preventDefault(); midiEl.hidden = !midiEl.hidden; midiStatus() }
+    })
+
+    // ---- run the sketch
+    const errEl = document.getElementById('err')
+    const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
+    new AsyncFunction(source)().catch((err) => {
+      console.error(err)
+      errEl.textContent = String(err && err.stack || err)
+      errEl.hidden = false
+    })
+  </script>
+</body>
+</html>

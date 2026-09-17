@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>hero_Render</title>
-<meta name="description" content="To-scale wireframe of the hero render: screen bank, pallet rack and cable runs.">
+<title>frontier_container</title>
+<meta name="description" content="To-scale wireframe of the hero render, and the hydra visual preset.">
 <style>
   :root{
     --green:#00FF41;
+    --orange:#EE8B2E;
     --bg:#111111;
     --dim:#7a7a7a;
     --ring:132px;       /* orbit radius at rest */
@@ -19,6 +20,7 @@
   body{
     margin:0;background:var(--bg);
     display:flex;align-items:center;justify-content:center;
+    gap:24px;flex-wrap:wrap;
     font:12px/1.5 Helvetica,"Helvetica Neue",Arial,sans-serif;color:var(--dim);
     -webkit-tap-highlight-color:transparent;
   }
@@ -28,21 +30,29 @@
     width:calc(var(--ring-hover)*2 + var(--dot));
     height:calc(var(--ring-hover)*2 + var(--dot));
     text-decoration:none;color:inherit;
+    --accent:var(--green);
   }
+  .enter.alt{--accent:var(--orange)}
   .enter:focus{outline:none}
 
   .orbit{
     position:absolute;inset:0;
     animation:spin 14s linear infinite;
   }
+  /* second node counter-rotates and runs slower, so the two read as distinct */
+  .enter.alt .orbit{animation:spin 19s linear infinite reverse}
+
   .orbit i{
     position:absolute;top:50%;left:50%;
     width:var(--dot);height:var(--dot);margin:calc(var(--dot)/-2);
-    border-radius:50%;background:var(--green);
+    border-radius:50%;background:var(--accent);
     transform:rotate(var(--a)) translateY(calc(var(--ring)*-1));
     transition:transform .5s cubic-bezier(.22,1,.36,1), opacity .5s;
     opacity:.85;
   }
+  /* the hydra node uses squares, not dots — it is a pixel sketch */
+  .enter.alt .orbit i{border-radius:0}
+
   .enter:hover .orbit i,
   .enter:focus-visible .orbit i{
     transform:rotate(var(--a)) translateY(calc(var(--ring-hover)*-1));
@@ -51,7 +61,7 @@
   .enter:active .orbit i{
     transform:rotate(var(--a)) translateY(calc(var(--ring)*-0.94));
   }
-  .enter:focus-visible .orbit i{box-shadow:0 0 0 3px rgba(0,255,65,.28)}
+  .enter:focus-visible .orbit i{box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent)}
 
   .label{
     position:absolute;inset:0;display:flex;flex-direction:column;
@@ -61,15 +71,19 @@
     font-size:12px;font-weight:400;color:#eee;letter-spacing:.02em;
   }
   .label span{color:var(--dim);transition:color .4s}
-  .enter:hover .label span,.enter:focus-visible .label span{color:var(--green)}
+  .enter:hover .label span,.enter:focus-visible .label span{color:var(--accent)}
 
   @keyframes spin{to{transform:rotate(360deg)}}
 
+  @media (max-width:820px){
+    body{gap:0}
+  }
   @media (max-width:520px){
     :root{--ring:96px;--ring-hover:116px;--dot:13px}
   }
   @media (prefers-reduced-motion:reduce){
     .orbit{animation:none}
+    .enter.alt .orbit{animation:none}
     .orbit i{transition:none}
   }
 </style>
@@ -84,6 +98,17 @@
   <span class="label">
     <b>hero_Render</b>
     <span>initialize</span>
+  </span>
+</a>
+
+<a class="enter alt" href="preset-1.html">
+  <span class="orbit" aria-hidden="true">
+    <i style="--a:0deg"></i><i style="--a:36deg"></i><i style="--a:72deg"></i><i style="--a:108deg"></i><i style="--a:144deg"></i>
+    <i style="--a:180deg"></i><i style="--a:216deg"></i><i style="--a:252deg"></i><i style="--a:288deg"></i><i style="--a:324deg"></i>
+  </span>
+  <span class="label">
+    <b>preset_01</b>
+    <span>run visual</span>
   </span>
 </a>
 

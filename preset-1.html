@@ -39,16 +39,16 @@
        ===================================================================== -->
   <script>
     window.MIDI_MAP = {
-      blend:     1,   // CC → blend amount into the merge layer
-      contrast:  2,   // CC → contrast of the merge and green layers
-      sortX:     3,   // CC → pxsort direction (green pixels layer)
-      sortY:     4,   // CC → pysort direction (merge layer)
-      grid:      5,   // CC → dither grid scale
-      speed:     7,   // CC → global hydra speed  (CC7 is "volume" on most controllers)
+      blend:    32,   // CC → blend amount into the merge layer
+      contrast: 33,   // CC → contrast of the merge and green layers
+      sortX:    34,   // CC → pxsort direction (green pixels layer)
+      sortY:    35,   // CC → pysort direction (merge layer)
+      grid:     36,   // CC → dither grid scale
+      speed:    37,   // CC → global hydra speed
     }
     // hard render resolution. object-fit: cover in the CSS scales it to fill the window.
-    window.RENDER_W = 800
-    window.RENDER_H = 840
+    window.RENDER_W = 1920
+    window.RENDER_H = 1080
   </script>
 
   <script id="sketch" type="text/plain">
